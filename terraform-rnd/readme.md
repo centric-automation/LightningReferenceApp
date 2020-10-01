@@ -1,4 +1,13 @@
 
+# Terraform?
+
+* [Getting Started](https://azure.microsoft.com/en-us/solutions/devops/terraform/)
+* [Commands](https://www.terraform.io/docs/commands/index.html)
+* [Azure Provider](https://www.terraform.io/docs/providers/azurerm/)
+* [Azure DevOps Provider](https://www.terraform.io/docs/providers/azuredevops/index.html)
+* [Store Terraform state in Azure Storage](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage)
+* [Further Reading: Documentation Root](https://docs.microsoft.com/en-us/azure/developer/terraform/)
+
 
 # Init Environment
 
