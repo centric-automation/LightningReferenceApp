@@ -8,7 +8,6 @@
 * [Store Terraform state in Azure Storage](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage)
 * [Further Reading: Documentation Root](https://docs.microsoft.com/en-us/azure/developer/terraform/)
 
-
 # Init Environment
 
 [Store Terraform state in Azure Storage](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage)
@@ -25,9 +24,7 @@ terraform init
 terraform apply
 ```
 
-
-
-
 ### Environment Variables
 * ARM_ACCESS_KEY
 * AZDO_PERSONAL_ACCESS_TOKEN -> This is the Azure DevOps organization personal access token.
+  * export AZDO_PERSONAL_ACCESS_TOKEN=544rrz7y4rdwnd2immvb6d2hxchxoxicao3ltausxgqtasvxusxa
