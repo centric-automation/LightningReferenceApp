@@ -1,6 +1,5 @@
 
 # Terraform?
-
 * [Getting Started](https://azure.microsoft.com/en-us/solutions/devops/terraform/)
 * [Commands](https://www.terraform.io/docs/commands/index.html)
 * [Azure Provider](https://www.terraform.io/docs/providers/azurerm/)
@@ -9,10 +8,9 @@
 * [Further Reading: Documentation Root](https://docs.microsoft.com/en-us/azure/developer/terraform/)
 
 # Init Environment
-
 [Store Terraform state in Azure Storage](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage)
 
-**Initialize your local access to to ensure state is shared properly**
+**Initialize your local access to to ensure state is shared property**
 
 ```shell
 export ARM_ACCESS_KEY=$(az keyvault secret show --name terraform-backend-key --vault-name myKeyVault --query value -o tsv)
