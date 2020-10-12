@@ -5,7 +5,7 @@ trigger:
     - "*"
 
 variables:
-    apiBuildVmImage: 'ubuntu-latest'
+  apiBuildVmImage: 'ubuntu-latest'
 
 stages:
 - stage: BuildAndTestApi
