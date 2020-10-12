@@ -31,12 +31,6 @@ stages:
       displayName: 'Dump Environment Variables'
       inputs:
         script: 'printenv'
-    
-    - task: UseDotNet@2
-      displayName: 'Install NET Core 5.0.x'
-      inputs:
-        version: '5.0.x'
-        packageType: sdk
 
 
 
