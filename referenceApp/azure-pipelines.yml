@@ -6,6 +6,7 @@ trigger:
 
 variables:
   apiBuildVMImage: 'windows-latest'
+  apiSolution: '$(System.DefaultWorkingDirectory)\referenceApp\api\referenceApi.sln'
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -31,6 +32,45 @@ stages:
       displayName: 'Dump Environment Variables'
       inputs:
         script: 'printenv'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet restore $(apiSolution)'
+      inputs:
+        command: 'restore'
+        projects: '$(apiSolution)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build $(apiSolution) --configuration $(buildConfiguration)'
+      inputs:
+        command: 'build'
+        projects: '$(apiSolution)'
+        arguments: '-- configuration $(buildConfiguration)'
+
+    # - task: DotNetCoreCLI@2
+    #   displayName: "Run ALL Tests and Collect Code Coverage"
+    #   inputs:
+    #     command: 'test'
+    #     projects: '$(System.DefaultWorkingDirectory)\api\**\*Tests\*.csproj'
+    #     arguments: '--verbosity normal --configuration $(buildConfiguraton) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:ExcludeByFile="$(apiBuildLocation)\src\SelectSires.BullSearch.Fns\Models\*.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Lib\Models\*.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Lib\Constants.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Fns\startup.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Lib\WebClientFileDownloader.cs"'
+
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'Install Custom Tool: ReportGenerator Tool'
+    #   inputs:
+    #     command: custom
+    #     custom: tool
+    #     arguments: 'install --tool-path . dotnet-reportgenerator-globaltool'
+
+    # - task: CmdLine@2
+    #   displayName: 'Create Reports'
+    #   inputs:
+    #     script: 'reportgenerator -reports:$(System.DefaultWorkingDirectory)\api\**\coverage.cobertura.xml -targetdir:$(System.DefaultWorkingDirectory)\api\CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(System.DefaultWorkingDirectory)\api\'
+
+    # - task: PublishCodeCoverageResults@1
+    #   displayName: 'Publish API Code Coverage'
+    #   inputs:
+    #     codeCoverageTool: Cobertura
+    #     summaryFileLocation: '$(System.DefaultWorkingDirectory)\api\**\coverage.cobertura.xml'
+    #     reportDirectory: '$(System.DefaultWorkingDirectory)\api\CoverageReport'
 
 
 
