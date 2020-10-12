@@ -3,7 +3,6 @@ trigger:
   branches:
     include:
     - "*"
-    exclude:
 
 variables:
   apiBuildVMImage: 'windows-latest'
