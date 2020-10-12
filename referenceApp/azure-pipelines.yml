@@ -8,6 +8,7 @@ variables:
   apiBuildVMImage: 'windows-latest'
   apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
   apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
+  apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenctApp.Api.csproj'
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -72,6 +73,23 @@ stages:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(apiSolutionRoot)\**\coverage.cobertura.xml'
         reportDirectory: '$(apiSolutionRoot)\CoverageReport'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'Stage API Build Artifacts'
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '$(apiProject)'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\api'
+        zipAfterPublish: false
+        modifyOutputPath: false
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish API Artifacts: api-drop'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'api-drop'
+        publishLocation: 'pipeline'
 
 
 
