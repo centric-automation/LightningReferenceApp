@@ -6,7 +6,8 @@ trigger:
 
 variables:
   apiBuildVMImage: 'windows-latest'
-  apiSolution: '$(System.DefaultWorkingDirectory)\referenceApp\api\referenceApi.sln'
+  apiSolutionRoot: $(System.DefaultWorkingDirectory)\referenceApp
+  apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -46,19 +47,19 @@ stages:
         projects: '$(apiSolution)'
         arguments: '-- configuration $(buildConfiguration)'
 
-    # - task: DotNetCoreCLI@2
-    #   displayName: "Run ALL Tests and Collect Code Coverage"
-    #   inputs:
-    #     command: 'test'
-    #     projects: '$(System.DefaultWorkingDirectory)\api\**\*Tests\*.csproj'
-    #     arguments: '--verbosity normal --configuration $(buildConfiguraton) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:ExcludeByFile="$(apiBuildLocation)\src\SelectSires.BullSearch.Fns\Models\*.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Lib\Models\*.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Lib\Constants.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Fns\startup.cs%2c$(apiBuildLocation)\src\SelectSires.BullSearch.Lib\WebClientFileDownloader.cs"'
+    - task: DotNetCoreCLI@2
+      displayName: "Run ALL Tests and Collect Code Coverage"
+      inputs:
+        command: 'test'
+        projects: '$(apiSolutionRoot)\**\*Tests\*.csproj'
+        arguments: '--verbosity normal --configuration $(buildConfiguraton) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
-    # - task: DotNetCoreCLI@2
-    #   displayName: 'Install Custom Tool: ReportGenerator Tool'
-    #   inputs:
-    #     command: custom
-    #     custom: tool
-    #     arguments: 'install --tool-path . dotnet-reportgenerator-globaltool'
+    - task: DotNetCoreCLI@2
+      displayName: 'Install Custom Tool: ReportGenerator Tool'
+      inputs:
+        command: custom
+        custom: tool
+        arguments: 'install --tool-path . dotnet-reportgenerator-globaltool'
 
     # - task: CmdLine@2
     #   displayName: 'Create Reports'
