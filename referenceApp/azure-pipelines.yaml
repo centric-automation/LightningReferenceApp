@@ -13,7 +13,7 @@ stages:
   dependsOn: []
 
   jobs:
-  - jobs: BuildAndRunAPIUnitTests
+  - job: BuildAndRunAPIUnitTests
     displayName: "API: Build and Execute Unit Tests"
 
     pool: $(apiBuildVmImage)
