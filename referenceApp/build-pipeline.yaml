@@ -1,0 +1,30 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - "*"
+
+variables:
+    apiBuildVmImage: 'windows-2019'
+
+stages:
+- stage: BuildAndTestApi
+  displayName: 'Build and Test API'
+  dependsOn: []
+
+  jobs:
+  - jobs: BuildAndRunAPIUnitTests
+    displayName: "API: Build and Execute Unit Tests"
+
+    pool: $(apiBuildVmImage)
+
+    steps:
+    - checkout: self
+      submodules: true
+
+    - task: CmdLine@2
+      displayName: 'Dump Environment Variables'
+      inputs:
+        script: 'printenv'
+
+    
