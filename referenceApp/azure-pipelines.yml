@@ -52,7 +52,7 @@ stages:
       inputs:
         command: 'test'
         projects: '$(apiSolutionRoot)\**\*Tests\*.csproj'
-        arguments: '--verbosity normal --configuration $(buildConfiguraton) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+        arguments: '--verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
     - task: DotNetCoreCLI@2
       displayName: 'Install Custom Tool: ReportGenerator Tool'
@@ -64,7 +64,7 @@ stages:
     - task: CmdLine@2
       displayName: 'Create Reports'
       inputs:
-        script: 'reportgenerator -reports:$(apiSolutionRoot)\**\coverage.cobertura.xml -targetdir:$(apiSolutionRoot)\CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
+        script: 'reportgenerator -reports:$(apiSolutionRoot)**\coverage.cobertura.xml -targetdir:$(apiSolutionRoot)\CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish API Code Coverage'
