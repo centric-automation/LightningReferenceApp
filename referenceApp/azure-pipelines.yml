@@ -6,7 +6,7 @@ trigger:
 
 variables:
   apiBuildVMImage: 'windows-latest'
-  apiSolutionRoot: $(System.DefaultWorkingDirectory)\referenceApp
+  apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp'
   apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
