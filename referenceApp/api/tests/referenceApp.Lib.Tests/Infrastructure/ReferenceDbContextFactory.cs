@@ -1,6 +1,7 @@
 using System;
 using referenceApp.Persistence;
 using Microsoft.EntityFrameworkCore;
+using referenceApp.Persistence.Models;
 
 namespace referenceApp.Lib.Tests.Infrastructure
 {
@@ -16,13 +17,21 @@ namespace referenceApp.Lib.Tests.Infrastructure
 
 			context.Database.EnsureCreated();
 
+			context.Todos.AddRange(new[] {
+				new Todo{Id = Guid.NewGuid(), Title = $"Title - {Guid.NewGuid().ToString()}"},
+				new Todo{Id = Guid.NewGuid(), Title = $"Title - {Guid.NewGuid().ToString()}"},
+				new Todo{Id = Guid.NewGuid(), Title = $"Title - {Guid.NewGuid().ToString()}"}
+			});
+
+			context.SaveChanges();
+
 			return context;
 		}
 
 		public static void Destroy(ReferenceDbContext context)
 		{
 			if (!context.Database.IsInMemory()) return;
-			
+
 			context.Database.EnsureDeleted();
 
 			context.Dispose();

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using referenceApp.Persistence.Models;
 using System.Threading;
 using referenceApp.Lib.Tests.Infrastructure;
-using referenceApp.Lib.Todos.Queries;
-using referenceApp.Lib.Todos.Models;
 
 namespace referenceApp.Lib.Tests
 {
@@ -51,26 +49,6 @@ namespace referenceApp.Lib.Tests
 			await _commandHandler.Handle(_command, CancellationToken.None);
 
 			return await _context.Todos.FindAsync(_command.Id);
-		}
-	}
-
-	[Collection("QueryCollection")]
-	public class GetTodosListQueryHandlerTests
-	{
-		private ReferenceDbContext _context;
-
-		public GetTodosListQueryHandlerTests(QueryTestFixture fixture)
-		{
-			_context = fixture.Context;
-		}
-
-		[Fact]
-		public async Task GetTodosListTest()
-		{
-			var handler = new GetTodosListQueryHandler(_context);
-			var result = await handler.Handle(new GetTodosListQuery(), CancellationToken.None);
-
-			result.ShouldBeOfType<TodoListModel>();
 		}
 	}
 }
