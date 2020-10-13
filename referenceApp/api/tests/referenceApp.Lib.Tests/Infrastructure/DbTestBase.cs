@@ -2,7 +2,7 @@ using System;
 using referenceApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace referenceApp.Lib.Tests
+namespace referenceApp.Lib.Tests.Infrastructure
 {
 	public abstract class DbTestBase
 	{

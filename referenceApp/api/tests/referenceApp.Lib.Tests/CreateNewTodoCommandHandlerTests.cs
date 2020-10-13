@@ -1,4 +1,4 @@
-using Xunit;
+﻿using Xunit;
 using Shouldly;
 using referenceApp.Persistence;
 using referenceApp.Lib.Todos.CreateNewTodo;
@@ -6,18 +6,12 @@ using System;
 using System.Threading.Tasks;
 using referenceApp.Persistence.Models;
 using System.Threading;
+using referenceApp.Lib.Tests.Infrastructure;
+using referenceApp.Lib.Todos.Queries;
+using referenceApp.Lib.Todos.Models;
 
 namespace referenceApp.Lib.Tests
 {
-	public class UnitTest1
-	{
-		[Fact]
-		public void Test1()
-		{
-			true.ShouldBeTrue();
-		}
-	}
-
 	public class CreateNewTodoCommandHandlerTests : DbTestBase
 	{
 		private ReferenceDbContext _context;
@@ -38,8 +32,8 @@ namespace referenceApp.Lib.Tests
 		[Fact]
 		public async Task ShouldCreate()
 		{
-				var entity = await ExecuteCommand();
-				entity.ShouldNotBeNull();
+			var entity = await ExecuteCommand();
+			entity.ShouldNotBeNull();
 		}
 
 		[Fact]
@@ -57,6 +51,26 @@ namespace referenceApp.Lib.Tests
 			await _commandHandler.Handle(_command, CancellationToken.None);
 
 			return await _context.Todos.FindAsync(_command.Id);
+		}
+	}
+
+	[Collection("QueryCollection")]
+	public class GetTodosListQueryHandlerTests
+	{
+		private ReferenceDbContext _context;
+
+		public GetTodosListQueryHandlerTests(QueryTestFixture fixture)
+		{
+			_context = fixture.Context;
+		}
+
+		[Fact]
+		public async Task GetTodosListTest()
+		{
+			var handler = new GetTodosListQueryHandler(_context);
+			var result = await handler.Handle(new GetTodosListQuery(), CancellationToken.None);
+
+			result.ShouldBeOfType<TodoListModel>();
 		}
 	}
 }
