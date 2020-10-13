@@ -44,6 +44,13 @@ namespace referenceApp.Lib.Tests
 			entity.WhenCreated.ShouldBe(_command.WhenCreated);
 		}
 
+		[Fact]
+		public async Task ShouldFailIfInvalidModel()
+		{
+			_command.Title = null;
+			var entity = await ExecuteCommand();
+		}
+
 		private async Task<Todo> ExecuteCommand()
 		{
 			await _commandHandler.Handle(_command, CancellationToken.None);
