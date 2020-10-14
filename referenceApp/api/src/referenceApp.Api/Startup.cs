@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MediatR;
+using MediatR.Pipeline;
+using referenceApp.Lib.Infrastructure;
+using referenceApp.Lib.Todos.Queries;
+using System.Reflection;
 
 namespace referenceApp.Api
 {
@@ -27,7 +31,12 @@ namespace referenceApp.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddMediatR(typeof(Startup));
+
+			// Add MediatR and load handlers from Lib project
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+			services.AddMediatR(typeof(GetTodosListQueryHandler).GetTypeInfo().Assembly);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
