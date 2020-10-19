@@ -48,7 +48,13 @@ namespace referenceApp.Api
 			});
 
 			// FOR DEMONSTRATION PURPOSES
-			services.AddDbContext<ReferenceDbContext> (options => options.UseSqlite("Data Source=todo.db"));
+			//services.AddDbContext<ReferenceDbContext> (options => options.UseSqlite("Data Source=todo.db"));
+			services.AddDbContext<ReferenceDbContext> (
+				options => options.UseSqlServer(
+					Configuration.GetConnectionString("ReferenceAppConnectionString"),
+					optionsBiuilder => optionsBiuilder.MigrationsAssembly("referenceApp.Api"))
+			);
+			// services.AddDbContext<ReferenceDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

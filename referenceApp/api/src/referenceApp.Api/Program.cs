@@ -48,6 +48,12 @@ namespace referenceApp.Api
 				config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 					.AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true)
 					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+				if (hostingContext.HostingEnvironment.IsDevelopment())
+				{
+					config.AddUserSecrets<Program>();
+				}
+
 				config.AddEnvironmentVariables();
 			})
 			.ConfigureLogging((hostingContext, logging) =>
