@@ -27,7 +27,8 @@ namespace referenceApp.Lib.Todos.Queries
 				Id = t.Id,
 				Title = t.Title,
 				DueDate = t.DueDate,
-				WhenCreated = t.WhenCreated
+				WhenCreated = t.WhenCreated,
+				IsComplete = t.IsComplete
 			}
 			).ToListAsync(cancellationToken);
 

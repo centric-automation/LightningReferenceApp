@@ -4,8 +4,9 @@ namespace referenceApp.Persistence.Models
 {
 	public class Todo
 	{
-		public Guid Id { get; set; }
+		public Guid Id { get; set; } = Guid.NewGuid();
 		public string Title { get; set; }
+		public bool? IsComplete { get; set; } = false;
 		public DateTime? DueDate { get; set; }
 		public DateTime WhenCreated { get; set; }
 	}
