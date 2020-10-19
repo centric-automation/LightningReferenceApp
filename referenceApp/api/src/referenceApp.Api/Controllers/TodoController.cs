@@ -5,6 +5,7 @@ using referenceApp.Api.Models;
 using referenceApp.Lib.Todos.CreateNewTodo;
 using referenceApp.Lib.Todos.Models;
 using referenceApp.Lib.Todos.Queries;
+using referenceApp.Lib.Todos.ToggleTodoComplete;
 
 namespace referenceApp.Api.Controllers
 {
@@ -21,7 +22,7 @@ namespace referenceApp.Api.Controllers
 		[HttpPost]
 		[Produces("application/json")]
 		[Consumes("application/json")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status201Created)]
 		public async Task<TodoModel> CreateNewTask([FromBody] NewTodoModel model)
 		{
 			var command = new CreateNewTodoCommand
@@ -31,6 +32,16 @@ namespace referenceApp.Api.Controllers
 			};
 
 			return await Mediator.Send(command);
+		}
+
+		[HttpPut("{id}")]
+		[Produces("application/json")]
+		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		public async Task<IActionResult> ToggleIsComplete(string id)
+		{
+			await Mediator.Send(new TodoToggleIsCompleteCommand(id));
+
+			return new NoContentResult();
 		}
 	}
 }
