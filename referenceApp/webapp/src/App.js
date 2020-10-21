@@ -4,11 +4,15 @@ import axios from 'axios';
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton"
 import Todo from "./components/Todo";
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import ListGroup from "react-bootstrap/ListGroup"
 
 const FILTER_MAP = {
 	All: () => true,
 	Active: task => !task.isComplete,
-	IsComplete: task => task.isComplete
+	Complete: task => task.isComplete
 };
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
@@ -85,21 +89,30 @@ function App(props) {
 	const headingText = `${taskList.length} ${tasksNoun} remaining`;
 
 	return (
-		<div className="todoapp stack-large">
-			<div className="todoapp stack-large">
-				<Form addTask={addTask} />
-				<div className="filters btn-group stack-exception">
+		<Container fluid>
+			<Row>
+				<Col>
+					<Form addTask={addTask} />
+				</Col>
+			</Row>
+			<Row>
+				<Col>
 					{filterList}
-				</div>
-				<h2 id="list-heading">{headingText}</h2>
-				<ul
-					className="todo-list stack-large stack-exception"
-					aria-labelledby="list-heading"
-				>
-					{taskList}
-				</ul>
-			</div>
-		</div>
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<h2 id="list-heading">{headingText}</h2>
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<ListGroup>
+						{taskList}
+					</ListGroup>
+				</Col>
+			</Row>
+		</Container>
 	);
 }
 

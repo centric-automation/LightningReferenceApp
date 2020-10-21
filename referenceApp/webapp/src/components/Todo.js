@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import Button from 'react-bootstrap/Button';
+import ListGroup from "react-bootstrap/ListGroup"
 
 export default function Todo(props) {
 	const [isEditing, setEditing] = useState(false);
@@ -23,21 +26,18 @@ export default function Todo(props) {
 				</label>
 				<input id={props.id} className="todo-text" type="text" onChange={handleChange} />
 			</div>
-			<div className="btn-group">
-				<button type="button" className="btn todo-cancel" onClick={() => setEditing(false)}>
+			<ButtonGroup aria-label="Editing Buttons">
+				<Button variant="outline-warning" onClick={() => setEditing(false)}>
 					Cancel
-        <span className="visually-hidden">renaming {props.title}</span>
-				</button>
-				<button type="submit" className="btn btn__primary todo-edit">
+				</Button>
+				<Button variant="outline-primary">
 					Save
-        <span className="visually-hidden">new title for {props.title}</span>
-				</button>
-			</div>
-		</form>
+				</Button>
+			</ButtonGroup>
+		</form>	
 	);
 	const viewTemplate = (
 		<div className="stack-small">
-			<div className="c-cb">
 				<input
 					id={props.id}
 					type="checkbox"
@@ -45,25 +45,28 @@ export default function Todo(props) {
 					onChange={() => props.toggleTaskCompleted(props.id)}
 				/>
 				<label className="todo-label" htmlFor={props.id}>
-					{props.title} - {props.isComplete}
+					{props.title}
 				</label>
-			</div>
-			<div className="btn-group">
-				<button type="button" className="btn" onClick={() => setEditing(true)}>
-					Edit <span className="visually-hidden">{props.title}</span>
-				</button>
-				<button
-					type="button"
-					className="btn btn__danger"
+			<ButtonGroup aria-label="Editing Buttons">
+				<Button
+					variant="outline-secondary"
+					size="sm"
+					onClick={() => setEditing(true)}>
+					Edit
+				</Button>
+				<Button
+					variant="outline-danger"
+					size="sm"
 					onClick={() => props.deleteTask(props.id)}
 				>
-					Delete <span className="visually-hidden">{props.title}</span>
-				</button>
-			</div>
+					Delete
+				</Button>
+			</ButtonGroup>
 		</div>
 	);
 
 	return (
-	<li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>
+		
+		<ListGroup.Item>{isEditing ? editingTemplate : viewTemplate}</ListGroup.Item>
 	);
 }

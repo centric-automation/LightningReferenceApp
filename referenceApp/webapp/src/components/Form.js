@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Button from 'react-bootstrap/Button';
+
 
 function Form(props) {
 	const [name, setName] = useState('');
@@ -15,8 +17,8 @@ function Form(props) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h2 className="label-wrapper">
-				<label htmlFor="new-todo-input" className="label__lg">
-					What needs to be done?
+				<label htmlFor="new-todo-input">
+					Todo
         </label>
 			</h2>
 			<input
@@ -28,9 +30,9 @@ function Form(props) {
 				value={name}
 				onChange={handleChnage}
 			/>
-			<button type="submit" className="btn btn__primary btn__lg">
+			<Button type="submit" variant="outline-primary">
 				Add
-      </button>
+      </Button>
 		</form>
 	);
 }
