@@ -26,7 +26,7 @@ export default function Todo(props) {
 				</label>
 				<input id={props.id} className="todo-text" type="text" onChange={handleChange} />
 			</div>
-			<ButtonGroup aria-label="Editing Buttons">
+			<ButtonGroup aria-label="Editing Buttons" size="sm">
 				<Button variant="outline-warning" onClick={() => setEditing(false)}>
 					Cancel
 				</Button>
@@ -47,7 +47,7 @@ export default function Todo(props) {
 				<label className="todo-label" htmlFor={props.id}>
 					{props.title}
 				</label>
-			<ButtonGroup aria-label="Editing Buttons">
+			<ButtonGroup aria-label="Editing Buttons" size="sm">
 				<Button
 					variant="outline-secondary"
 					size="sm"

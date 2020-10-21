@@ -30,7 +30,7 @@ function Form(props) {
 				value={name}
 				onChange={handleChnage}
 			/>
-			<Button type="submit" variant="outline-primary">
+			<Button type="submit" variant="outline-primary" >
 				Add
       </Button>
 		</form>
