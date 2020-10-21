@@ -34,6 +34,14 @@ namespace referenceApp.Api
 		{
 			services.AddControllers();
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("development", builder =>
+				{
+					builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+				});
+			});
+
 			// Add MediatR and load handlers from Lib project
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehavior<,>));
@@ -49,7 +57,7 @@ namespace referenceApp.Api
 
 			// FOR DEMONSTRATION PURPOSES
 			//services.AddDbContext<ReferenceDbContext> (options => options.UseSqlite("Data Source=todo.db"));
-			services.AddDbContext<ReferenceDbContext> (
+			services.AddDbContext<ReferenceDbContext>(
 				options => options.UseSqlServer(
 					Configuration.GetConnectionString("ReferenceAppConnectionString"),
 					optionsBiuilder => optionsBiuilder.MigrationsAssembly("referenceApp.Api"))
@@ -69,6 +77,8 @@ namespace referenceApp.Api
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseCors("developement");
 
 			app.UseAuthorization();
 
