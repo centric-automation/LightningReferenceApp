@@ -26,7 +26,7 @@ variables:
 
 stages:
 - stage: BuildTestStageApi
-  displayName: 'Build, Test and Stage API'
+  displayName: 'API: Build, Test and Stage'
   dependsOn: []
   
   jobs:
@@ -103,7 +103,7 @@ stages:
         publishLocation: 'pipeline'
 
 - stage: BuildTestStageWebApp
-  displayName: 'Build, Test and Stage WebApp'
+  displayName: 'WEBAPP: Build, Test and Stage'
   dependsOn: []
 
   jobs:
@@ -131,7 +131,7 @@ stages:
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: $(webAppBuildDestination)
-        includeRootFolder: true 
+        includeRootFolder: false 
         archiveType: 'zip' # Options: zip, 7z, tar, wim
         #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
         archiveFile: '$(Build.ArtifactStagingDirectory)/webapp/$(Build.BuildId).zip' 
@@ -140,10 +140,10 @@ stages:
         #quiet: # Optional
 
     - task: PublishPipelineArtifact@1
-      displayName: 'Publish React Artifacts - react-drop'
+      displayName: 'Publish Web App Artifacts - web-app-drop'
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifact: 'react-drop'
+        artifact: 'web-app-drop'
         publishLocation: 'pipeline'
 
 
