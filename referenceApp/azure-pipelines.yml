@@ -25,7 +25,7 @@ variables:
 
 stages:
 - stage: BuildTestStageApi
-  displayName: 'Build and Test API'
+  displayName: 'Build, Test and Stage API'
   dependsOn: []
   
   jobs:
@@ -102,11 +102,11 @@ stages:
         publishLocation: 'pipeline'
 
 - stage: BuildTestStageWebApp
-  displayName: 'Build and Test API'
+  displayName: 'Build, Test and Stage WebApp'
   dependsOn: []
 
   jobs:
-  - job: BuildAndRunAPIUnitTests
+  - job: BuildWebApp
     displayName: "Build, Test and Stage Web App"
     dependsOn: []
 
