@@ -5,18 +5,26 @@ trigger:
     - "*"
 
 variables:
-  apiBuildVMImage: 'windows-latest'
   # ***** API Project Build Params *****
+  apiBuildVMImage: 'windows-latest'
   apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
   apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
   apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenceApp.Api.csproj'
   # ***** END API PROJECT BUILD PARAMS *****
+
+  # ***** WEBAPP Project Build Params *****
+  webappBuildVMImage: 'ubuntu-latest'
+  webAppSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\webapp'
+  # ***** END WEBAPP PROJECT BUILD PARAMS *****
+
+
+
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 stages:
-- stage: BuildAndTestApi
+- stage: BuildTestStageApi
   displayName: 'Build and Test API'
   dependsOn: []
   
@@ -92,6 +100,35 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'api-drop'
         publishLocation: 'pipeline'
+
+- stage: BuildTestStageWebApp
+  displayName: 'Build and Test API'
+  dependsOn: []
+
+  jobs:
+  - job: BuildAndRunAPIUnitTests
+    displayName: "Build, Test and Stage Web App"
+    dependsOn: []
+
+    pool:
+      vmImage: $(webappBuildVMImage)
+
+    steps:
+    - checkout: self
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+      workingDirectory: $(webAppSolutionRoot)
+
+
+  
 
 
 
