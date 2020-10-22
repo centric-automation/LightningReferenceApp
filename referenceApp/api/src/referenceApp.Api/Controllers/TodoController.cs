@@ -56,7 +56,7 @@ namespace referenceApp.Api.Controllers
 		[Produces("application/json")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[FeatureGate(FeatureFlags.DeleteTodo)]
-		public async Task<IActionResult> Delete(string id)
+		public IActionResult Delete(string id)
 		{
 			return Ok();
 		}
