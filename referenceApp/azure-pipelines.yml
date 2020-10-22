@@ -15,6 +15,7 @@ variables:
   # ***** WEBAPP Project Build Params *****
   webappBuildVMImage: 'ubuntu-latest'
   webAppSolutionRoot: '$(System.DefaultWorkingDirectory)/referenceApp/webapp'
+  webAppBuildDestination: '$(System.DefaultWorkingDirectory)/referenceApp/webapp/build'
   # ***** END WEBAPP PROJECT BUILD PARAMS *****
 
 
@@ -122,10 +123,28 @@ stages:
       displayName: 'Install Node.js'
 
     - script: |
-        npm install
-        npm run build
-      displayName: 'npm install and build'
+        yarn install
+        yarn build
+      displayName: 'Yarn install and build'
       workingDirectory: $(webAppSolutionRoot)
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: $(webAppBuildDestination)
+        includeRootFolder: true 
+        archiveType: 'zip' # Options: zip, 7z, tar, wim
+        #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+        archiveFile: '$(Build.ArtifactStagingDirectory)/webapp/$(Build.BuildId).zip' 
+        #replaceExistingArchive: true 
+        #verbose: # Optional
+        #quiet: # Optional
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish React Artifacts - react-drop'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'react-drop'
+        publishLocation: 'pipeline'
 
 
   
