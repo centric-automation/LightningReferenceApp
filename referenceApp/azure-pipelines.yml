@@ -18,11 +18,10 @@ variables:
   webAppBuildDestination: '$(System.DefaultWorkingDirectory)/referenceApp/webapp/build'
   # ***** END WEBAPP PROJECT BUILD PARAMS *****
 
-
-
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  disable.coverage.autogenerate: 'true'
 
 stages:
 - stage: BuildTestStageApi
@@ -76,7 +75,7 @@ stages:
     - task: CmdLine@2
       displayName: 'Create Reports'
       inputs:
-        script: 'reportgenerator -reports:$(apiSolutionRoot)\**\coverage.cobertura.xml -targetdir:$(apiSolutionRoot)\CoverageReport -reporttypes:"Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
+        script: 'reportgenerator -reports:$(apiSolutionRoot)\**\coverage.cobertura.xml -targetdir:$(apiSolutionRoot)\CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish API Code Coverage'
