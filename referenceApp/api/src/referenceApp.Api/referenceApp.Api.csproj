@@ -13,6 +13,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.FeatureManagement" Version="2.2.0" />
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.2.0" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.8.2" />
     <PackageReference Include="NSwag.MSBuild" Version="13.8.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers;</IncludeAssets>

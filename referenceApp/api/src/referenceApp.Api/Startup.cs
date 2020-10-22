@@ -17,6 +17,7 @@ using referenceApp.Lib.Todos.Queries;
 using System.Reflection;
 using referenceApp.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 
 namespace referenceApp.Api
 {
@@ -54,6 +55,8 @@ namespace referenceApp.Api
 				document.Title = "ReferenceApp API";
 				document.Description = "API routes for interacting with ReferenceApp services.";
 			});
+
+			services.AddFeatureManagement();
 
 			// FOR DEMONSTRATION PURPOSES
 			//services.AddDbContext<ReferenceDbContext> (options => options.UseSqlite("Data Source=todo.db"));

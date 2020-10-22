@@ -49,7 +49,7 @@ namespace referenceApp.Api
 					.AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true)
 					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-				if (hostingContext.HostingEnvironment.IsDevelopment())
+				if (env.IsDevelopment())
 				{
 					config.AddUserSecrets<Program>();
 				}

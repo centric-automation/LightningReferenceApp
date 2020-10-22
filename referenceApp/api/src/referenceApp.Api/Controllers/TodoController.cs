@@ -1,6 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.Mvc;
+using referenceApp.Api.Infrastructure;
 using referenceApp.Api.Models;
 using referenceApp.Lib.Todos.CreateNewTodo;
 using referenceApp.Lib.Todos.Models;
@@ -11,6 +14,10 @@ namespace referenceApp.Api.Controllers
 {
 	public class TodoController : ApiControllerBase
 	{
+		public TodoController(IFeatureManager featureManager) : base(featureManager)
+		{
+		}
+
 		[HttpGet]
 		[Produces("application/json")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
@@ -42,6 +49,16 @@ namespace referenceApp.Api.Controllers
 			await Mediator.Send(new TodoToggleIsCompleteCommand(id));
 
 			return new NoContentResult();
+		}
+
+		[HttpDelete("{id}")]
+		[HttpPut("{id}")]
+		[Produces("application/json")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[FeatureGate(FeatureFlags.DeleteTodo)]
+		public async Task<IActionResult> Delete(string id)
+		{
+			return Ok();
 		}
 	}
 }
