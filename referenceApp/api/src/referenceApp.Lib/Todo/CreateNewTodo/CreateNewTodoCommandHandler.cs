@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using referenceApp.Persistence.Models;
 using referenceApp.Persistence;
+using referenceApp.Lib.Todos.Models;
 
 namespace referenceApp.Lib.Todos.CreateNewTodo
 {
-	public class CreateNewTodoCommandHandler : IRequestHandler<CreateNewTodoCommand, Unit>
+	public class CreateNewTodoCommandHandler : IRequestHandler<CreateNewTodoCommand, TodoModel>
 	{
 		private readonly ReferenceDbContext _context;
 
@@ -16,7 +17,7 @@ namespace referenceApp.Lib.Todos.CreateNewTodo
 			_context = context;
 		}
 
-		public async Task<Unit> Handle(CreateNewTodoCommand request, CancellationToken cancellationToken)
+		public async Task<TodoModel> Handle(CreateNewTodoCommand request, CancellationToken cancellationToken)
 		{
 			var newTodo = new Todo();
 
@@ -29,7 +30,7 @@ namespace referenceApp.Lib.Todos.CreateNewTodo
 
 			await _context.SaveChangesAsync(cancellationToken);
 
-			return Unit.Value;
+			return new TodoModel(newTodo);
 		}	
 	}
 }

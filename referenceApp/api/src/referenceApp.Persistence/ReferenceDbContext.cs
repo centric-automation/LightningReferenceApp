@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using referenceApp.Persistence.Models;
-using System;
 
 namespace referenceApp.Persistence
 {
