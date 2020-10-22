@@ -5,19 +5,28 @@ trigger:
     - "*"
 
 variables:
-  apiBuildVMImage: 'windows-latest'
   # ***** API Project Build Params *****
+  apiBuildVMImage: 'windows-latest'
   apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
   apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
   apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenceApp.Api.csproj'
   # ***** END API PROJECT BUILD PARAMS *****
+
+  # ***** WEBAPP Project Build Params *****
+  webappBuildVMImage: 'ubuntu-latest'
+  webAppSolutionRoot: '$(System.DefaultWorkingDirectory)/referenceApp/webapp'
+  webAppBuildDestination: '$(System.DefaultWorkingDirectory)/referenceApp/webapp/build'
+  # ***** END WEBAPP PROJECT BUILD PARAMS *****
+
+
+
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 stages:
-- stage: BuildAndTestApi
-  displayName: 'Build and Test API'
+- stage: BuildTestStageApi
+  displayName: 'API: Build, Test and Stage'
   dependsOn: []
   
   jobs:
@@ -93,23 +102,56 @@ stages:
         artifact: 'api-drop'
         publishLocation: 'pipeline'
 
+- stage: BuildTestStageWebApp
+  displayName: 'WEBAPP: Build, Test and Stage'
+  dependsOn: []
 
+  jobs:
+  - job: BuildWebApp
+    displayName: "Build, Test and Stage Web App"
+    dependsOn: []
 
-# steps:
-# - task: NuGetToolInstaller@1
+    pool:
+      vmImage: $(webappBuildVMImage)
 
-# - task: NuGetCommand@2
-#   inputs:
-#     restoreSolution: '$(solution)'
+    steps:
+    - checkout: self
 
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+      displayName: 'Install Node.js'
 
-# - task: VSTest@2
-#   inputs:
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+    - script: |
+        yarn install
+        yarn build
+      displayName: 'Yarn install and build'
+      workingDirectory: $(webAppSolutionRoot)
+
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: $(webAppBuildDestination) # Optional
+        contents: '**' 
+        targetFolder: '$(Build.ArtifactStagingDirectory)/webapp'
+        #cleanTargetFolder: false # Optional
+        #overWrite: false # Optional
+        #flattenFolders: false # Optional
+        #preserveTimestamp: false # Optional
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: $(webAppBuildDestination)
+        includeRootFolder: false 
+        archiveType: 'zip' # Options: zip, 7z, tar, wim
+        #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+        #replaceExistingArchive: true 
+        #verbose: # Optional
+        #quiet: # Optional
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Web App Artifacts - web-app-drop'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'web-app-drop'
+        publishLocation: 'pipeline'
