@@ -128,6 +128,16 @@ stages:
       displayName: 'Yarn install and build'
       workingDirectory: $(webAppSolutionRoot)
 
+    - task: CopyFiles@2
+      inputs:
+      sourceFolder: $(webAppBuildDestination) # Optional
+      #contents: '**' 
+      targetFolder: '$(Build.ArtifactStagingDirectory)/webapp'
+      #cleanTargetFolder: false # Optional
+      #overWrite: false # Optional
+      #flattenFolders: false # Optional
+      #preserveTimestamp: false # Optional
+
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: $(webAppBuildDestination)
