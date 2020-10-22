@@ -14,7 +14,7 @@ variables:
 
   # ***** WEBAPP Project Build Params *****
   webappBuildVMImage: 'ubuntu-latest'
-  webAppSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\webapp'
+  webAppSolutionRoot: '$(System.DefaultWorkingDirectory)/referenceApp/webapp'
   # ***** END WEBAPP PROJECT BUILD PARAMS *****
 
 
