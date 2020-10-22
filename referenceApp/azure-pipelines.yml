@@ -131,7 +131,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         sourceFolder: $(webAppBuildDestination) # Optional
-        #contents: '**' 
+        contents: '**' 
         targetFolder: '$(Build.ArtifactStagingDirectory)/webapp'
         #cleanTargetFolder: false # Optional
         #overWrite: false # Optional
