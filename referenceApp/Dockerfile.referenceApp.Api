@@ -5,11 +5,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-COPY ["api/src/referenceApp.Api/referenceApp.Api.csproj", "api/src/referenceApp.Api/"]
-COPY ["api/src/", "api/src/"]
-RUN dotnet restore "api\src\referenceApp.Api\referenceApp.Api.csproj"
+COPY ["api/src/referenceApp.Api/referenceApp.Api.csproj", "referenceApp.Api/"]
+COPY ["api/src/", "./"]
+RUN dotnet restore "referenceApp.Api\referenceApp.Api.csproj"
 COPY . ./
-WORKDIR "/src/api/src/referenceApp.Api"
+WORKDIR "/src/referenceApp.Api"
 RUN dotnet build "referenceApp.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
