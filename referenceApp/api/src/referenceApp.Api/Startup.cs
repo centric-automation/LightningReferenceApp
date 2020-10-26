@@ -17,17 +17,20 @@ using referenceApp.Lib.Todos.Queries;
 using System.Reflection;
 using referenceApp.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 
 namespace referenceApp.Api
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IWebHostEnvironment env)
 		{
 			Configuration = configuration;
+			_env = env;
 		}
 
 		public IConfiguration Configuration { get; }
+		private readonly IWebHostEnvironment _env;
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public virtual void ConfigureServices(IServiceCollection services)
@@ -55,21 +58,21 @@ namespace referenceApp.Api
 				document.Description = "API routes for interacting with ReferenceApp services.";
 			});
 
+			services.AddFeatureManagement();
+
 			// FOR DEMONSTRATION PURPOSES
-			//services.AddDbContext<ReferenceDbContext> (options => options.UseSqlite("Data Source=todo.db"));
 			services.AddDbContext<ReferenceDbContext>(
 				options => options.UseSqlServer(
 					Configuration.GetConnectionString("ReferenceAppConnectionString"),
 					optionsBiuilder => optionsBiuilder.MigrationsAssembly("referenceApp.Api"))
 			);
-			// services.AddDbContext<ReferenceDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public virtual void Configure(IApplicationBuilder app)
 		{
 
-			if (env.IsDevelopment())
+			if (_env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}

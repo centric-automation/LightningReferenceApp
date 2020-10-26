@@ -45,16 +45,29 @@ namespace referenceApp.Api
 			.ConfigureAppConfiguration((hostingContext, config) =>
 			{
 				var env = hostingContext.HostingEnvironment;
-				config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				config
+					.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 					.AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true)
 					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-				if (hostingContext.HostingEnvironment.IsDevelopment())
+				if (env.IsDevelopment())
 				{
 					config.AddUserSecrets<Program>();
 				}
-
 				config.AddEnvironmentVariables();
+
+				if (!env.IsDevelopment())
+				{
+					config.AddAzureAppConfiguration(options =>
+					{
+						var settings = config.Build();
+						options
+							.Connect(settings["ConnectionStrings:AppConfigConnectionString"])
+							.UseFeatureFlags();
+					});
+				}
+
+				var settings = config.Build();
 			})
 			.ConfigureLogging((hostingContext, logging) =>
 			{

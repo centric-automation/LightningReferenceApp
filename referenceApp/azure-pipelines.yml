@@ -18,11 +18,10 @@ variables:
   webAppBuildDestination: '$(System.DefaultWorkingDirectory)/referenceApp/webapp/build'
   # ***** END WEBAPP PROJECT BUILD PARAMS *****
 
-
-
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  disable.coverage.autogenerate: 'true'
 
 stages:
 - stage: BuildTestStageApi
