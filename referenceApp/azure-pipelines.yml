@@ -6,7 +6,7 @@ trigger:
 
 variables:
   containerImageRepository: "api"
-  dockerRegistryServiceConnection: "lightningdevopstestprojectcr.azurecr.io"
+  containerRegistryServiceConnection: "lightningdevopstestprojectcr.azurecr.io"
 
   # ***** API Project Build Params *****
   apiBuildVMImage: 'windows-latest'
