@@ -11,3 +11,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled            = false
   # georeplication_locations = ["East US"]	
 }
+
+output "login_server" {
+  value = azurerm_container_registry.acr.login_server
+}
