@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "referenceApp.Lib.Tests", "t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "referenceApp.Persistence", "src\referenceApp.Persistence\referenceApp.Persistence.csproj", "{CA0AD3FD-4047-4EFB-864B-F380203DEA5D}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{013F9267-6307-4EFE-A4BE-93BF0F180D46}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
