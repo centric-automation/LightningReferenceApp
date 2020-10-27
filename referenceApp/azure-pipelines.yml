@@ -104,6 +104,7 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'api-drop'
         publishLocation: 'pipeline'
+        
     - task: Docker@2
       displayName: Build Docker Image and Push to Registry
       inputs:

@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk AS build
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -12,7 +12,7 @@ WORKDIR /app/api/src/referenceApp.Api
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet AS runtime
 WORKDIR /app
 COPY --from=build /app/api/src/referenceApp.Api/out ./
 ENTRYPOINT ["dotnet", "referenceApp.Api.dll"]
