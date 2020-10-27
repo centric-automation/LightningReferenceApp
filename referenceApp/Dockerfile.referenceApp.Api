@@ -5,6 +5,9 @@ EXPOSE 443
 
 # Copy everything else and build
 COPY . ./
+WORKDIR /app/api
+RUN dotnet restore
+
 WORKDIR /app/api/src/referenceApp.Api
 RUN dotnet publish -c Release -o out
 
