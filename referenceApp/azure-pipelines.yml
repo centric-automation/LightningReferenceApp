@@ -104,24 +104,21 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'api-drop'
         publishLocation: 'pipeline'
+
+    - task: Docker@2
+      displayName: Login to ACR
+      inputs:
+        command: login
+        containerRegistry: $(containerRegistryServiceConnection)
         
     - task: Docker@2
       displayName: Build Docker Image and Push to Registry
       inputs:
-        # containerRegistry: 'projectContainerRegistry'
         containerRegistry: $(containerRegistryServiceConnection)
         repository: 'referenceApp.Api'
         command: 'buildAndPush'
-        # Dockerfile: '**/Dockerfile'
         Dockerfile: $(apiDockerFilePath)
-
-    # - task: Docker@2
-    #   displayName: Build Docker Image and Push to Registry
-    #   inputs:
-    #     command: buildAndPush
-    #     repository: $(containerImageRepository)
-    #     dockerfile: $(apiDockerFilePath)
-    #     containerRegistry: $(containerRegistryServiceConnection)
+        tags:
 
 - stage: BuildTestStageWebApp
   displayName: 'WEBAPP: Build, Test and Stage'
