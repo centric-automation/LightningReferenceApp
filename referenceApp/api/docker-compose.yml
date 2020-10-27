@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  referenceapp.api:
-    image: ${DOCKER_REGISTRY-}referenceapp
-    build:
-      context: .
-      dockerfile: src/referenceApp.Api/Dockerfile
