@@ -6,7 +6,7 @@ trigger:
 
 variables:
   containerImageRepository: "api"
-  containerRegistryServiceConnection: "lightningdevopstestprojectcr.azurecr.io"
+  containerRegistryServiceConnection: "projectContainerRegistry"
 
   # ***** API Project Build Params *****
   apiBuildVMImage: 'windows-latest'
@@ -104,14 +104,23 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'api-drop'
         publishLocation: 'pipeline'
-
     - task: Docker@2
       displayName: Build Docker Image and Push to Registry
       inputs:
-        command: buildAndPush
-        repository: $(containerImageRepository)
-        dockerfile: $(apiDockerFilePath)
+        # containerRegistry: 'projectContainerRegistry'
         containerRegistry: $(containerRegistryServiceConnection)
+        repository: 'referenceApp.Api'
+        command: 'buildAndPush'
+        # Dockerfile: '**/Dockerfile'
+        Dockerfile: $(apiDockerFilePath)
+
+    # - task: Docker@2
+    #   displayName: Build Docker Image and Push to Registry
+    #   inputs:
+    #     command: buildAndPush
+    #     repository: $(containerImageRepository)
+    #     dockerfile: $(apiDockerFilePath)
+    #     containerRegistry: $(containerRegistryServiceConnection)
 
 - stage: BuildTestStageWebApp
   displayName: 'WEBAPP: Build, Test and Stage'
