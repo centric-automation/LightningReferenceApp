@@ -5,11 +5,15 @@ trigger:
     - "*"
 
 variables:
+  containerImageRepository: "api"
+  containerRegistryServiceConnection: "projectContainerRegistry"
+
   # ***** API Project Build Params *****
   apiBuildVMImage: 'windows-latest'
   apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
   apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
   apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenceApp.Api.csproj'
+  apiDockerFilePath: '$(System.DefaultWorkingDirectory)\referenceApp\Dockerfile.referenceApp.Api'
   # ***** END API PROJECT BUILD PARAMS *****
 
   # ***** WEBAPP Project Build Params *****
@@ -100,6 +104,21 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'api-drop'
         publishLocation: 'pipeline'
+
+    - task: Docker@2
+      displayName: Login to ACR
+      inputs:
+        command: login
+        containerRegistry: $(containerRegistryServiceConnection)
+        
+    - task: Docker@2
+      displayName: Build Docker Image and Push to Registry
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        repository: 'referenceApp.Api'
+        command: 'buildAndPush'
+        Dockerfile: $(apiDockerFilePath)
+        tags:
 
 - stage: BuildTestStageWebApp
   displayName: 'WEBAPP: Build, Test and Stage'
