@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using referenceApp.Persistence;
+using System;
+using System.IO;
 
 namespace referenceApp.Api
 {
@@ -58,16 +55,14 @@ namespace referenceApp.Api
 
 				if (!env.IsDevelopment())
 				{
+					var settings = config.Build();
 					config.AddAzureAppConfiguration(options =>
 					{
-						var settings = config.Build();
 						options
 							.Connect(settings["ConnectionStrings:AppConfigConnectionString"])
 							.UseFeatureFlags();
 					});
 				}
-
-				var settings = config.Build();
 			})
 			.ConfigureLogging((hostingContext, logging) =>
 			{
