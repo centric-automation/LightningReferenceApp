@@ -2,29 +2,72 @@
 
 Using the Terraform scripts provided here, the user should be able to create a new Project and certain other necessary Azure required for the team to begin building software.
 
-A functional understanding of Terraform is required. Reference the [Appendix](#appendix) for any foundational or details not provided below.
+A functional understanding of Microsoft Azure Subscription and Terraform are required. Reference the [Appendix](#appendix) for any foundational or details not provided below.
 
 ## Prerequisites
-Before this automation can be executed 
+Before this automation can be executed that initializes the team, there are required actions that must be performed first.
 
-* Create/Re-Use Microsoft Azure Subscription
-* Create a Microsoft DevOps Organization - https://dev.azure.com
-* Customize the App Dev Process for the Organization to be in line with Centric's Right Site approach
-* Initialize the Terraform state power store (See [Init Environment](#init-environment) in [Appendix](#appendix))
+1. **Create/Re-Use Microsoft Azure Subscription**
 
-## Create a TFVARS fils for the New Project
+	> Visit the [Microsoft Azure Portal](https://portal.azure.com) and ensure the client has a Micorost Azure subscription created with billing details specified. NOTE: an existing subscription can be used or a new one may be created.
+	> 
+	> Make note of the subscription name for later use.
 
-## Execute the Terraform Script
+2. **Create a Microsoft DevOps Organization**
+	> Go through the steps to create a new Microsoft Azure DevOps Subscription on the [Microsoft Azure DevOps](https://dev.azure.com) site. Use the subscriiption identified in the previous step. Take note of the Organization URl.
+	>
+	> Ensure that the team member executing the Terraform scripts has ***Administrative*** level access to the **Organization**.
+
+3.  **Customize the App Dev Process Template for the Organization to be in line with Centric's Right Site approach**
+
+	> A key componentn of Centric's Right Site model is a [Customized Process Template](https://docs.microsoft.com/en-us/azure/devops/organizations/settings/work/manage-process?view=azure-devops) in Microsfot Azure DevOps. Create an inherited process derived from the existing Agile Template. Name the process and take down the name to be used later in the process.
+	>
+	> Modify the process according the the current Right Site process guidelines.
+
+4. **Initialize the Terraform state power store**
+	> The terraform scripts must be able to be used by multiple team members concurrently. As a result, the Terraform state should be shared. Follow the directions in the [Init Environment](#init-environment) section of the [Appendix](#appendix).
+
+## Create Steps
+Once all fo the prerequisites have been met, the current scripts can be used to create a new Microsoft Azure DevOps ***Team*** in the created **Organization** contained in the ***Subscription***.
+
+### Create a TFVARS fils for the New Project
+The process is customized by supplying values specific to this project. All of theese input variables (and their defaults) are defined in the ```variables.tf``` file. 
+
+The ```terraform.tfvars``` file can be used to set these values prior to script execution.
+
+> Terraform will prompt for any values not specified in a ```.tfvars``` file.
+
+The variables/input values consumed by this system are defined below
+
+* project_organization_url: The base URL of the Microsoft Azure DevOps Organization. Example: `https://dev.azure.com/ModernSoftwareDelivery/`
+* **project_name**: The name of the new Team to be created
+* **project_description**: Detailed description of the Team to be creted
+* **project_template**: The process template that the team should follow. This should be the name of the process template created in the prerequisites.
+* **dev_resource_region**: The ```Azure Region``` in which new Azure resources should be provisioned. It should be a standard Azure Region. The Azure CLI can be used to determine valid regions. Execute the following Azure CLI command to determine valid regions: ```az account list-locations -o table```. Use the name value as the region name.
+* **dev_resource_group_name**: The name of the ```Resource Group``` to be created to contain Azure development resources.
+* **dev_container_registry_name**: The name of the ```Azure Container Registry``` to be created to host any Docker containers built and pushed through the CI/CD process.
+
+### Execute the Terraform Script
+
+At this point the script should be ready to be executed follow the standard Terraform process of executing the ```plan``` and ```apply``` commands.
+
+```
+terraform plan
+terraform apply
+```
+
+At this point any manual customizations can be applied to the project.
 
 <hr />
 
-## What is Created as Part of the Process
+### What is Created as Part of the Process
 
-* a
-* b
-* c
-* d
-* e
+| Resource | Defined in File |
+|:-------|:-----------|
+|Azure DevOps Project| ```azure-devops-organization.tf``` |
+|Git Repository| ```azure-devops-organization.tf``` |
+|Azure Resource Group for Development resources| ```initial-deployment-provisioning-registry.tf``` |
+|Azure Container Registry| ```initial-deployment-provisioning-registry.tf``` |
 
 <hr />
 
@@ -39,21 +82,26 @@ Before this automation can be executed
 * [Further Reading: Documentation Root](https://docs.microsoft.com/en-us/azure/developer/terraform/)
 
 ### Init Environment
-[Store Terraform state in Azure Storage](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage)
+The information used to accomplish this step comes from the blog post [Store Terraform state in Azure Storage](https://docs.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage) from Microsoft.
 
-**Initialize your local access to to ensure state is shared property**
+If a shell script is being used in Windows, MacOS, or Linux the script ```init_cloud_state_storage.sh``` can be customzed to implement these steps.
 
-```shell
-export ARM_ACCESS_KEY=$(az keyvault secret show --name terraform-backend-key --vault-name myKeyVault --query value -o tsv)
-```
+If powershell is being used to execute these steps, the appropriate az cli steps can be executed to perform the correct tasks.
 
-**Configure Terraform to use state stored in blob storage**
+To execute the Terraform scripts, the following environment variables must be set to ensure proper credentials are used during execution:
+
+* **ARM_ACCESS_KEY**: Access key used to access the shared state storage location. Customize the following command and execute to set.
+	``` shell
+	export ARM_ACCESS_KEY=$(az keyvault secret show --name terraform-backend-key --vault-name <myKeyVault> --query value -o tsv)
+	```
+* **AZDO_PERSONAL_ACCESS_TOKEN**: This is the Azure DevOps organization personal access token. Customize the following command and execute to set.
+	```shell
+	export AZDO_PERSONAL_ACCESS_TOKEN=<yourPersonalAccessToken>
+	```
+
+
+#### Configure Terraform to use state stored in blob storage
 ```shell
 terraform init
 terraform apply
 ```
-
-### Environment Variables to Set
-* ARM_ACCESS_KEY
-* AZDO_PERSONAL_ACCESS_TOKEN -> This is the Azure DevOps organization personal access token.
-  * export AZDO_PERSONAL_ACCESS_TOKEN=544rrz7y4rdwnd2immvb6d2hxchxoxicao3ltausxgqtasvxusxa
