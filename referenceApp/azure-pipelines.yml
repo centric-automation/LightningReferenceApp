@@ -169,7 +169,7 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
 
     - script: |
-        yarn install
+        yarn build
       displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
 
