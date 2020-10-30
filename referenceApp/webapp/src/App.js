@@ -37,7 +37,7 @@ function App (props) {
 
   useEffect(() => {
     const fetchData = async () => {
-    	const result = await axios('https://localhost:5001/api/todo')
+    const result = await axios('https://localhost:5001/api/todo')
       setTasks(result.data.todos)
     }
 
