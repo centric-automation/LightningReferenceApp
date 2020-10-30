@@ -181,7 +181,7 @@ stages:
       condition: succeededOrFailed()
       inputs:
         testRunner: VSTest
-        testResultsFiles: '**/test-results.xml'
+        testResultsFiles: '**/test-results.trx'
 
     - task: CopyFiles@2
       inputs:
