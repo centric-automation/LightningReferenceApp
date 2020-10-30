@@ -173,6 +173,8 @@ stages:
       displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
 
+    - script: yarn test ---coverage --watchAll=false
+
     - task: CopyFiles@2
       inputs:
         sourceFolder: $(webAppBuildDestination) # Optional
