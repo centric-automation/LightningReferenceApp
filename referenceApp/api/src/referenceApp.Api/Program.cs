@@ -18,7 +18,7 @@ namespace referenceApp.Api
 
             using (var scope = host.Services.CreateScope())
             {
-            try
+                try
                 {
                     var context = scope.ServiceProvider.GetService<ReferenceDbContext>();
                     context.Database.Migrate();
