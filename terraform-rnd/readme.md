@@ -1,37 +1,39 @@
 # Use Terraform to Provision a Microsoft DevOps Team
 
-Using the Terraform scripts provided here, the user should be able to create a new Project and certain other necessary Azure required for the team to begin building software.
+Using the Terraform scripts provided here, the user should be able to create a new Project and certain other necessary Azure resources required for the team to begin building software.
 
-A functional understanding of Microsoft Azure Subscription and Terraform are required. Reference the [Appendix](#appendix) for any foundational or details not provided below.
+A functional understanding of Microsoft Azure Subscriptions and Terraform are required. Reference the [Appendix](#appendix) for any foundational information or details not provided below.
 
 ## Prerequisites
-Before this automation can be executed that initializes the team, there are required actions that must be performed first.
+Before this automation can be executed that initializes the team, there are required actions that must be first performed.
 
 1. **Create/Re-Use Microsoft Azure Subscription**
 
-	> Visit the [Microsoft Azure Portal](https://portal.azure.com) and ensure the client has a Micorost Azure subscription created with billing details specified. NOTE: an existing subscription can be used or a new one may be created.
+	> Visit the [Microsoft Azure Portal](https://portal.azure.com) and ensure the client has a Micorost Azure subscription created with billing details specified.
+	>
+	> *NOTE: an existing subscription can be used or a new one may be created.*
 	> 
 	> Make note of the subscription name for later use.
 
 2. **Create a Microsoft DevOps Organization**
-	> Go through the steps to create a new Microsoft Azure DevOps Subscription on the [Microsoft Azure DevOps](https://dev.azure.com) site. Use the subscriiption identified in the previous step. Take note of the Organization URl.
+	> Go through the steps to create a new Microsoft Azure DevOps Subscription on the [Microsoft Azure DevOps](https://dev.azure.com) site. Use the subscriiption identified in the previous step. Take note of the Organization URL.
 	>
 	> Ensure that the team member executing the Terraform scripts has ***Administrative*** level access to the **Organization**.
 
 3.  **Customize the App Dev Process Template for the Organization to be in line with Centric's Right Site approach**
 
-	> A key componentn of Centric's Right Site model is a [Customized Process Template](https://docs.microsoft.com/en-us/azure/devops/organizations/settings/work/manage-process?view=azure-devops) in Microsfot Azure DevOps. Create an inherited process derived from the existing Agile Template. Name the process and take down the name to be used later in the process.
+	> A key componentn of Centric's Right Site model is a [Customized Process Template](https://docs.microsoft.com/en-us/azure/devops/organizations/settings/work/manage-process?view=azure-devops) in Microsoft Azure DevOps. Create an inherited process derived from the existing Agile Template. Name the process and take down the name to be used later in the process.
 	>
-	> Modify the process according the the current Right Site process guidelines.
+	> Modify this process according the the current Right Site process guidelines.
 
 4. **Initialize the Terraform state power store**
 	> The terraform scripts must be able to be used by multiple team members concurrently. As a result, the Terraform state should be shared. Follow the directions in the [Init Environment](#init-environment) section of the [Appendix](#appendix).
 
-## Create Steps
-Once all fo the prerequisites have been met, the current scripts can be used to create a new Microsoft Azure DevOps ***Team*** in the created **Organization** contained in the ***Subscription***.
+## Create the New Azure DevOps Project
+Once all the prerequisites have been met, the provided scripts can be used to create a new Microsoft Azure DevOps ***Team*** in the created **Organization** contained in the ***Subscription***.
 
 ### Create a TFVARS fils for the New Project
-The process is customized by supplying values specific to this project. All of theese input variables (and their defaults) are defined in the ```variables.tf``` file. 
+The provisioning process is customized by supplying input values specific to this project. All of theese input variables (and their defaults) are defined in the ```variables.tf``` file. 
 
 The ```terraform.tfvars``` file can be used to set these values prior to script execution.
 
