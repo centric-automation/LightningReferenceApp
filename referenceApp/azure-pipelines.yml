@@ -173,9 +173,15 @@ stages:
       displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
 
-    - script: yarn test ---coverage --watchAll=false
+    - script: yarn test ---coverage --watchAll=false --reporters="jest-trx-results-processor"
       displayName: 'Yarn Test and Code Coverage'
       workingDirectory: $(webAppSolutionRoot)
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testRunner: VSTest
+        testResultsFiles: '**/TEST-RESULTS.xml'
 
     - task: CopyFiles@2
       inputs:
