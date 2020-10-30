@@ -56,12 +56,16 @@ namespace referenceApp.Api
 				if (!env.IsDevelopment())
 				{
 					var settings = config.Build();
-					config.AddAzureAppConfiguration(options =>
+					var connStr = settings["ConnectionStrings:AppConfigConnectionString"];
+					if (connStr != null)
 					{
-						options
-							.Connect(settings["ConnectionStrings:AppConfigConnectionString"])
-							.UseFeatureFlags();
-					});
+						config.AddAzureAppConfiguration(options =>
+						{
+							options
+								.Connect(connStr)
+								.UseFeatureFlags();
+						});
+					}
 				}
 			})
 			.ConfigureLogging((hostingContext, logging) =>
