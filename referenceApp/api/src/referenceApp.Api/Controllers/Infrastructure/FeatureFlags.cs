@@ -1,7 +1,7 @@
-namespace referenceApp.Api.Infrastructure
+﻿namespace referenceApp.Api.Infrastructure
 {
-	public enum FeatureFlags
-	{
-		DeleteTodo
-	}
+    public enum FeatureFlags
+    {
+        DeleteTodo
+    }
 }

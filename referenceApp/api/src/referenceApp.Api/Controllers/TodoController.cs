@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
@@ -12,53 +12,53 @@ using referenceApp.Lib.Todos.ToggleTodoComplete;
 
 namespace referenceApp.Api.Controllers
 {
-	public class TodoController : ApiControllerBase
-	{
-		public TodoController(IFeatureManager featureManager) : base(featureManager)
-		{
-		}
+    public class TodoController : ApiControllerBase
+    {
+        public TodoController(IFeatureManager featureManager) : base(featureManager)
+        {
+        }
 
-		[HttpGet]
-		[Produces("application/json")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<TodoListModel> List()
-		{
-			return await Mediator.Send(new GetTodosListQuery());
-		}
+        [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<TodoListModel> List()
+        {
+            return await Mediator.Send(new GetTodosListQuery());
+        }
 
-		[HttpPost]
-		[Produces("application/json")]
-		[Consumes("application/json")]
-		[ProducesResponseType(StatusCodes.Status201Created)]
-		public async Task<TodoModel> CreateNewTask([FromBody] NewTodoModel model)
-		{
-			var command = new CreateNewTodoCommand
-			{
-				Title = model.Title,
-				DueDate = model.DueDate
-			};
+        [HttpPost]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<TodoModel> CreateNewTask([FromBody] NewTodoModel model)
+        {
+            var command = new CreateNewTodoCommand
+            {
+                Title = model.Title,
+                DueDate = model.DueDate
+            };
 
-			return await Mediator.Send(command);
-		}
+            return await Mediator.Send(command);
+        }
 
-		[HttpPut("{id}")]
-		[Produces("application/json")]
-		[ProducesResponseType(StatusCodes.Status204NoContent)]
-		public async Task<IActionResult> ToggleIsComplete(string id)
-		{
-			await Mediator.Send(new TodoToggleIsCompleteCommand(id));
+        [HttpPut("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ToggleIsComplete(string id)
+        {
+            await Mediator.Send(new TodoToggleIsCompleteCommand(id));
 
-			return new NoContentResult();
-		}
+            return new NoContentResult();
+        }
 
-		[HttpDelete("{id}")]
-		[HttpPut("{id}")]
-		[Produces("application/json")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[FeatureGate(FeatureFlags.DeleteTodo)]
-		public IActionResult Delete(string id)
-		{
-			return Ok();
-		}
-	}
+        [HttpDelete("{id}")]
+        [HttpPut("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [FeatureGate(FeatureFlags.DeleteTodo)]
+        public IActionResult Delete(string id)
+        {
+            return Ok();
+        }
+    }
 }
