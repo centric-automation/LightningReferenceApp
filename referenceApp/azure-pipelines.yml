@@ -160,8 +160,17 @@ stages:
 
     - script: |
         yarn install
-        yarn build
-      displayName: 'Yarn install and build'
+      displayName: 'Yarn install'
+      workingDirectory: $(webAppSolutionRoot)
+
+    - script: |
+        yarn run eslint --fix-dry-run "$(webAppSolutionRoot)/src/**"
+      displayName: 'Static Code Analysis with ESLINT'
+      workingDirectory: $(webAppSolutionRoot)
+
+    - script: |
+        yarn install
+      displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
 
     - task: CopyFiles@2

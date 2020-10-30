@@ -11,6 +11,7 @@ export default function Todo (props) {
     setNewName(e.target.value)
   }
 
+		
   function handleSubmit (e) {
     e.preventDefault()
     props.editTask(props.id, newName)
@@ -23,50 +24,50 @@ export default function Todo (props) {
       <div className="form-group">
         <label className="todo-label" htmlFor={props.id}>
           New title for {props.title}
-        </label>
-        <input id={props.id} className="todo-text" type="text" onChange={handleChange} />
-      </div>
-      <ButtonGroup aria-label="Editing Buttons" size="sm">
-        <Button variant="outline-warning" onClick={() => setEditing(false)}>
-          Cancel
-        </Button>
-        <Button variant="outline-primary">
-          Save
-        </Button>
-      </ButtonGroup>
-    </form>
+				</label>
+				<input id={props.id} className="todo-text" type="text" onChange={handleChange} />
+			</div>
+				<ButtonGroup aria-label="Editing Buttons" size="sm">
+				<Button variant="outline-warning" onClick={() => setEditing(false)}>
+					Cancel
+				</Button>
+				<Button variant="outline-primary">
+					Save
+				</Button>
+			</ButtonGroup>
+		</form>
   )
   const viewTemplate = (
-    <div className="stack-small">
-        <input
-          id={props.id}
-          type="checkbox"
-          defaultChecked={props.isComplete}
-          onChange={() => props.toggleTaskCompleted(props.id)}
-        />
-        <label className="todo-label" htmlFor={props.id}>
-          {props.title}
-        </label>
-      <ButtonGroup aria-label="Editing Buttons" size="sm">
-        <Button
-          variant="outline-secondary"
-          size="sm"
-          onClick={() => setEditing(true)}>
-          Edit
-        </Button>
-        <Button
-          variant="outline-danger"
-          size="sm"
-          onClick={() => props.deleteTask(props.id)}
-        >
-          Delete
-        </Button>
-      </ButtonGroup>
-    </div>
+		<div className="stack-small">
+				<input
+					id={props.id}
+					type="checkbox"
+					defaultChecked={props.isComplete}
+					onChange={() => props.toggleTaskCompleted(props.id)}
+				/>
+				<label className="todo-label" htmlFor={props.id}>
+					{props.title}
+				</label>
+			<ButtonGroup aria-label="Editing Buttons" size="sm">
+				<Button
+					variant="outline-secondary"
+					size="sm"
+					onClick={() => setEditing(true)}>
+					Edit
+				</Button>
+				<Button
+					variant="outline-danger"
+					size="sm"
+					onClick={() => props.deleteTask(props.id)}
+				>
+					Delete
+				</Button>
+			</ButtonGroup>
+		</div>
   )
 
   return (
 
-    <ListGroup.Item>{isEditing ? editingTemplate : viewTemplate}</ListGroup.Item>
-  )
+		<ListGroup.Item>{isEditing ? editingTemplate : viewTemplate}</ListGroup.Item>
+	)
 }
