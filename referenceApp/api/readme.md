@@ -1,4 +1,10 @@
 
+## Ensure dotnet format is installed
+```
+dotnet tool install -g dotnet-format
+```
+
+Before you commit, execute ```dotnet format``` to ensure your code meets all standards and formatting conventions. This same command is executed as part of the build process.
 
 ## Use Microsoft SQL Server on Linux for Docker Engine
 1. install docker
