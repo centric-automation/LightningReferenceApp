@@ -13,7 +13,7 @@ variables:
   apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
   apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
   apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenceApp.Api.csproj'
-  apiDockerFilePath: '$(System.DefaultWorkingDirectory)\referenceApp\Dockerfile.referenceApp.Api'
+  apiDockerFilePath: '$(System.DefaultWorkingDirectory)\referenceApp\api\Dockerfile'
   # ***** END API PROJECT BUILD PARAMS *****
 
   # ***** WEBAPP Project Build Params *****
