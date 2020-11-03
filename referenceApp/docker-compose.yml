@@ -8,8 +8,7 @@ services:
     environment:
       ConnectionStrings:ReferenceAppConnectionString: "Data Source=sqlserver;Initial Catalog=reference_app_dev;User Id=sa;Password=yourStrong(!)Password"
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "80:80"
   sqlserver:
     environment:
       ACCEPT_EULA: "y"
