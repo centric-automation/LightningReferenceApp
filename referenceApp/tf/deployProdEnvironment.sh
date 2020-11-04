@@ -3,4 +3,4 @@
 terraform workspace select prod || terraform workspace new prod
 
 
-terraform plan -var-file _prod.tfvars
+terraform apply -var-file _prod.tfvars
