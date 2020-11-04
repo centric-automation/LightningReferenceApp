@@ -10,10 +10,10 @@ variables:
 
   # ***** API Project Build Params *****
   apiBuildVMImage: 'ubuntu-latest'
-  apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
-  apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
-  apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenceApp.Api.csproj'
-  apiDockerFilePath: '$(System.DefaultWorkingDirectory)\referenceApp\api\Dockerfile'
+  apiSolutionRoot: '$(System.DefaultWorkingDirectory)/referenceApp/api'
+  apiSolution: '$(apiSolutionRoot)/referenceApi.sln'
+  apiProject: '$(apiSolutionRoot)/src/referenceApp.Api/referenceApp.Api.csproj'
+  apiDockerFilePath: '$(System.DefaultWorkingDirectory)/referenceApp/api/Dockerfile'
   # ***** END API PROJECT BUILD PARAMS *****
 
   # ***** WEBAPP Project Build Params *****
@@ -82,7 +82,7 @@ stages:
       displayName: "Run ALL Tests and Collect Code Coverage"
       inputs:
         command: 'test'
-        projects: '$(apiSolutionRoot)\**\*Tests\*.csproj'
+        projects: '$(apiSolutionRoot)/**/*Tests/*.csproj'
         arguments: '--verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
     - task: DotNetCoreCLI@2
@@ -95,14 +95,14 @@ stages:
     - task: CmdLine@2
       displayName: 'Create Reports'
       inputs:
-        script: './reportgenerator -reports:$(apiSolutionRoot)\**\coverage.cobertura.xml -targetdir:$(apiSolutionRoot)\CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
+        script: './reportgenerator -reports:$(apiSolutionRoot)/**/coverage.cobertura.xml -targetdir:$(apiSolutionRoot)/CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish API Code Coverage'
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '$(apiSolutionRoot)\**\coverage.cobertura.xml'
-        reportDirectory: '$(apiSolutionRoot)\CoverageReport'
+        summaryFileLocation: '$(apiSolutionRoot)/**/coverage.cobertura.xml'
+        reportDirectory: '$(apiSolutionRoot)/CoverageReport'
     
     - task: DotNetCoreCLI@2
       displayName: 'Stage API Build Artifacts'
@@ -110,7 +110,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '$(apiProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\api'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/api'
         zipAfterPublish: false
         modifyOutputPath: false
 
