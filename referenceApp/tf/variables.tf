@@ -12,5 +12,12 @@ variable "state_key" {
 	default="mJYySEkR4Q9BvyoLKdZioVlyR9Jic74HZPKJgpkMazH3uhzM/T2YNoW00m79TvWmxgiS4DuqeDIf9d/RsaS/fw=="
 }
 
+# Development Shared
+variable "shared_resource_group_name" {}
+variable "shared_container_registry_name" {}
+
+# Application
 variable "environment" { }
 variable "region" { }  
+variable "api_size" { }
+variable "api_tier" { }
