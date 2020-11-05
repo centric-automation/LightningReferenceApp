@@ -9,11 +9,11 @@ variables:
   containerRegistryServiceConnection: "projectContainerRegistry"
 
   # ***** API Project Build Params *****
-  apiBuildVMImage: 'windows-latest'
-  apiSolutionRoot: '$(System.DefaultWorkingDirectory)\referenceApp\api'
-  apiSolution: '$(apiSolutionRoot)\referenceApi.sln'
-  apiProject: '$(apiSolutionRoot)\src\referenceApp.Api\referenceApp.Api.csproj'
-  apiDockerFilePath: '$(System.DefaultWorkingDirectory)\referenceApp\Dockerfile.referenceApp.Api'
+  apiBuildVMImage: 'ubuntu-latest'
+  apiSolutionRoot: '$(System.DefaultWorkingDirectory)/referenceApp/api'
+  apiSolution: '$(apiSolutionRoot)/referenceApi.sln'
+  apiProject: '$(apiSolutionRoot)/src/referenceApp.Api/referenceApp.Api.csproj'
+  apiDockerFilePath: '$(System.DefaultWorkingDirectory)/referenceApp/api/Dockerfile'
   # ***** END API PROJECT BUILD PARAMS *****
 
   # ***** WEBAPP Project Build Params *****
@@ -60,12 +60,10 @@ stages:
     # By default, the task ensure the exit code is 0
     # If a file needs to be edited by dotnet format, the exit code will be a non-zero value
     # So the task will fail
-    - task: DotNetCoreCLI@2
+    - task: CmdLine@2
       displayName: 'Lint dotnet'
       inputs:
-        command: 'custom'
-        custom: 'format'
-        arguments: '--check --verbosity diagnostic $(apiSolution)'
+        script: '$HOME/.dotnet/tools/dotnet-format --check --verbosity diagnostic $(apiSolution)'
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet restore $(apiSolution)'
@@ -84,7 +82,7 @@ stages:
       displayName: "Run ALL Tests and Collect Code Coverage"
       inputs:
         command: 'test'
-        projects: '$(apiSolutionRoot)\**\*Tests\*.csproj'
+        projects: '$(apiSolutionRoot)/**/*Tests/*.csproj'
         arguments: '--verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
     - task: DotNetCoreCLI@2
@@ -97,14 +95,14 @@ stages:
     - task: CmdLine@2
       displayName: 'Create Reports'
       inputs:
-        script: 'reportgenerator -reports:$(apiSolutionRoot)\**\coverage.cobertura.xml -targetdir:$(apiSolutionRoot)\CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
+        script: './reportgenerator -reports:$(apiSolutionRoot)/**/coverage.cobertura.xml -targetdir:$(apiSolutionRoot)/CoverageReport -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Badges" -sourcedir:$(apiSolutionRoot)'
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish API Code Coverage'
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '$(apiSolutionRoot)\**\coverage.cobertura.xml'
-        reportDirectory: '$(apiSolutionRoot)\CoverageReport'
+        summaryFileLocation: '$(apiSolutionRoot)/**/coverage.cobertura.xml'
+        reportDirectory: '$(apiSolutionRoot)/CoverageReport'
     
     - task: DotNetCoreCLI@2
       displayName: 'Stage API Build Artifacts'
@@ -112,7 +110,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '$(apiProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)\api'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/api'
         zipAfterPublish: false
         modifyOutputPath: false
 
