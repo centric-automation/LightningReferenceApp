@@ -210,7 +210,7 @@ stages:
         artifact: 'web-app-drop'
         publishLocation: 'pipeline'
 
-- stage: Deploy DEV Environment
+- stage: DeployToDev
   displayName: 'Deploy API and WEBAPP to DEV Environment'
   dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
   condition: and(succeeded(), eq(variables.isMaster, true))
