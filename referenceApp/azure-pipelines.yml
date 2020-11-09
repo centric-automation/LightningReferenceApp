@@ -239,7 +239,7 @@ stages:
             
         - task: AzureFileCopy@4
           inputs:
-            SourcePath: '/root'
+            SourcePath: '$(System.DefaultWorkingDirectory)/webapp'
             azureSubscription: 'MSD-RandD(477728c9-15e4-46f4-a786-e56c5122926d)'
             Destination: 'AzureBlob'
             storage: 'aceraccoonwebdev'
