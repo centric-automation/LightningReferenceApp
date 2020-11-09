@@ -5,8 +5,10 @@ trigger:
     - "*"
 
 variables:
+  subscription: "MSD-RandD(477728c9-15e4-46f4-a786-e56c5122926d)"
   containerImageRepository: "api"
   containerRegistryServiceConnection: "projectContainerRegistry"
+  azureDevStorageAccount: 'aceraccoonwebdev'
 
   # ***** API Project Build Params *****
   apiBuildVMImage: 'ubuntu-latest'
@@ -239,10 +241,11 @@ stages:
             
         - task: AzureFileCopy@4
           inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)/webapp'
-            azureSubscription: 'MSD-RandD(477728c9-15e4-46f4-a786-e56c5122926d)'
+            SourcePath: '$(System.DefaultWorkingDirectory)/webapp/'
+            azureSubscription: '$(subscription)'
             Destination: 'AzureBlob'
-            storage: 'aceraccoonwebdev'
+            storage: '$(azureDevStorageAccount)'
+            CleanTargetBeforeCopy: true
             ContainerName: '$web'
         
 
