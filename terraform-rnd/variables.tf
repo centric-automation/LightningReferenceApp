@@ -19,10 +19,3 @@ variable "project_description" {
 
 variable "project_template" {
 }
-
-# Development Team Initial Provisioned Values
-variable "dev_resource_region" {
-  default = "eastus"
-}
-variable "dev_resource_group_name" {}
-variable "dev_container_registry_name" {}
