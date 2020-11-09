@@ -26,6 +26,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   disable.coverage.autogenerate: 'true'
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 stages:
 - stage: BuildTestStageApi
@@ -212,3 +213,29 @@ stages:
 - stage: Deploy DEV Environment
   displayName: 'Deploy API and WEBAPP to DEV Environment'
   dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
+  condition: and(succeeded(), eq(variables.isMaster, true))
+  
+  jobs:
+   
+
+    - job: DeployAPI
+      displayName: "API: Deploy to DEV Environment"
+      dependsOn: []
+
+    - job: DeployWEBAPP
+      displayName: "WEBAPP: Deploy to DEV Environment"
+      dependsOn: []
+      
+      pool:
+        vmImage: $(apiBuildVmImage)
+
+      steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: "WEBAPP Download Build Pipeline Artifacts"
+          inputs:
+            buildType: 'current'
+            artifactName: 'web-app-drop'
+            targetPath: '$(System.DefaultWorkingDirectory)'
+            
+        
+
