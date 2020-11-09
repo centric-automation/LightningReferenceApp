@@ -227,7 +227,7 @@ stages:
       dependsOn: []
       
       pool:
-        vmImage: $(apiBuildVmImage)
+        vmImage: 'windows-latest'
 
       steps:
         - task: DownloadPipelineArtifact@2
