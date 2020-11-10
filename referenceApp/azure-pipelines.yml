@@ -237,8 +237,7 @@ stages:
           inputs:
             buildType: 'current'
             artifactName: 'web-app-drop'
-            itemPattern: '/webapp/**'
-            targetPath: '$(System.DefaultWorkingDirectory)'
+            targetPath: '$(System.DefaultWorkingDirectory)/webapp'
         - task: AzureFileCopy@4
           inputs:
             SourcePath: '$(System.DefaultWorkingDirectory)'
