@@ -240,7 +240,7 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)'
         - task: AzureFileCopy@4
           inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)/webapp'
+            SourcePath: '$(System.DefaultWorkingDirectory)/webapp/webapp'
             azureSubscription: '$(subscription)'
             Destination: 'AzureBlob'
             storage: '$(azureDevStorageAccount)'
