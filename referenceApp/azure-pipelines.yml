@@ -237,10 +237,10 @@ stages:
           inputs:
             buildType: 'current'
             artifactName: 'web-app-drop'
-            targetPath: '$(System.DefaultWorkingDirectory)/webapp'
+            targetPath: '$(System.DefaultWorkingDirectory)'
         - task: AzureFileCopy@4
           inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)'
+            SourcePath: '$(System.DefaultWorkingDirectory)/webapp'
             azureSubscription: '$(subscription)'
             Destination: 'AzureBlob'
             storage: '$(azureDevStorageAccount)'
