@@ -171,12 +171,11 @@ stages:
 
     - script: |
         yarn build
-      displayName: 'Yarn Build'
+      displayName: 'DEVELOPMEMNT Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
         CI: true
         REACT_APP_ENV: development
-        #REACT_APP_API_URL: "https://aceraccoon-api-dev.azurewebsites.net/api"
 
     - script: yarn test ---coverage --watchAll=false --reporters="jest-trx-results-processor"
       displayName: 'Yarn Test and Code Coverage'
@@ -189,25 +188,41 @@ stages:
         testResultsFiles: '**/test-results.trx'
 
     - task: CopyFiles@2
+      displayName: Stage DEVELOPMENT Build
       inputs:
         sourceFolder: $(webAppBuildDestination) # Optional
         contents: '**' 
-        targetFolder: '$(Build.ArtifactStagingDirectory)/webapp'
-        #cleanTargetFolder: false # Optional
-        #overWrite: false # Optional
-        #flattenFolders: false # Optional
-        #preserveTimestamp: false # Optional
+        targetFolder: '$(Build.ArtifactStagingDirectory)/development_build'
 
-    - task: ArchiveFiles@2
+    - script: |
+        yarn build
+      displayName: 'TEST Yarn Build'
+      workingDirectory: $(webAppSolutionRoot)
+      env:
+        CI: true
+        REACT_APP_ENV: test
+
+    - task: CopyFiles@2
+      displayName: Stage TEST Build
       inputs:
-        rootFolderOrFile: $(webAppBuildDestination)
-        includeRootFolder: false 
-        archiveType: 'zip' # Options: zip, 7z, tar, wim
-        #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
-        #replaceExistingArchive: true 
-        #verbose: # Optional
-        #quiet: # Optional
+        sourceFolder: $(webAppBuildDestination) # Optional
+        contents: '**' 
+        targetFolder: '$(Build.ArtifactStagingDirectory)/test_build'
+
+    - script: |
+        yarn build
+      displayName: 'PRODUCTION Yarn Build'
+      workingDirectory: $(webAppSolutionRoot)
+      env:
+        CI: true
+        REACT_APP_ENV: test
+
+    - task: CopyFiles@2
+      displayName: Stage PRODUCTION Build
+      inputs:
+        sourceFolder: $(webAppBuildDestination) # Optional
+        contents: '**' 
+        targetFolder: '$(Build.ArtifactStagingDirectory)/production_build'
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Web App Artifacts - web-app-drop'
@@ -244,7 +259,7 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)'
         - task: AzureFileCopy@4
           inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)/webapp/**'
+            SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
             azureSubscription: '$(subscription)'
             Destination: 'AzureBlob'
             storage: '$(azureDevStorageAccount)'
