@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
-import process from 'dotenv'
+// import process from 'dotenv'
 
 const FILTER_MAP = {
   All: () => true,
@@ -38,7 +38,7 @@ function App (props) {
 
   useEffect(() => {
     const fetchData = async () => {
-			process.config();
+			// process.config();
 			const result = await axios(process.env.REACT_APP_API_URL  + "/todo" )
       setTasks(result.data.todos)
     }
