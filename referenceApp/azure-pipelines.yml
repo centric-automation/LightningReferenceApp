@@ -170,10 +170,11 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
 
     - script: |
-        yarn build
+        REACT_APP_API_URL=https://aceraccoon-api-dev.azurewebsites.net/api yarn build
       displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
+        CI: true
         REACT_APP_ENV: development
         REACT_APP_API_URL: "https://aceraccoon-api-dev.azurewebsites.net/api"
 
