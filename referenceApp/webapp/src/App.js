@@ -39,6 +39,7 @@ function App (props) {
   useEffect(() => {
     const fetchData = async () => {
 			// process.config();
+			// eslint-disable-next-line no-undef
 			const result = await axios(process.env.REACT_APP_API_URL  + "/todo" )
       setTasks(result.data.todos)
     }
