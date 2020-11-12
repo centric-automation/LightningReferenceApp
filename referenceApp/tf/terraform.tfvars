@@ -1,2 +1,2 @@
-shared_resource_group_name = "referenceAppSharedRG"
-shared_container_registry_name = "referenceAppSharedCR"
+shared_resource_group_name = "appSharedRG"
+shared_container_registry_name = "appSharedCR"

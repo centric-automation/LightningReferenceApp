@@ -1,15 +1,15 @@
 resource "azurerm_sql_server" "dbserver" {
-  name                         = "referenceapp-dbserver-${var.environment}"
-  resource_group_name          = azurerm_resource_group.referenceApp.name
+  name                         = "${var.application_name}-dbserver-${var.environment}"
+  resource_group_name          = azurerm_resource_group.app.name
   location                     = var.region
   version                      = "12.0"
-  administrator_login          = azurerm_key_vault_secret.referenceAppDbLogin.value
-  administrator_login_password = azurerm_key_vault_secret.referenceAppDbPassword.value
+  administrator_login          = azurerm_key_vault_secret.DbLogin.value
+  administrator_login_password = azurerm_key_vault_secret.DbPassword.value
 }
 
 resource "azurerm_sql_database" "db" {
-  name                = "referenceapp-db-${var.environment}"
-  resource_group_name = azurerm_resource_group.referenceApp.name
+  name                = "${var.application_name}-db-${var.environment}"
+  resource_group_name = azurerm_resource_group.app.name
   location            = var.region
   server_name         = azurerm_sql_server.dbserver.name
 

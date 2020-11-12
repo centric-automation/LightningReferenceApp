@@ -1,6 +1,6 @@
 resource "azurerm_key_vault" "kv" {
-  name                = "referenceAppvault${var.environment}"
-  resource_group_name = azurerm_resource_group.referenceApp.name
+  name                = "${var.application_name}vault${var.environment}"
+  resource_group_name = azurerm_resource_group.app.name
   location            = var.region
   sku_name            = "standard"
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -26,7 +26,7 @@ resource "azurerm_key_vault" "kv" {
   }
 }
 
-resource "azurerm_key_vault_secret" "referenceAppDbLogin" {
+resource "azurerm_key_vault_secret" "DbLogin" {
   name         = "dbLogin"
   value        = random_string.random.result
   key_vault_id = azurerm_key_vault.kv.id
@@ -36,7 +36,7 @@ resource "azurerm_key_vault_secret" "referenceAppDbLogin" {
   }
 }
 
-resource "azurerm_key_vault_secret" "referenceAppDbPassword" {
+resource "azurerm_key_vault_secret" "DbPassword" {
   name         = "dbPassword"
   value        = random_password.password.result
   key_vault_id = azurerm_key_vault.kv.id

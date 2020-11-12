@@ -17,6 +17,7 @@ variable "shared_resource_group_name" {}
 variable "shared_container_registry_name" {}
 
 # Application
+variable "application_name" { }
 variable "environment" { }
 variable "region" { }  
 variable "api_size" { }

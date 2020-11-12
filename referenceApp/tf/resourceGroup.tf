@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "referenceApp" {
-	name = "referenceApp_${var.environment}"
+resource "azurerm_resource_group" "app" {
+	name = "${var.application_name}_${var.environment}"
 	location = var.region
 }
 

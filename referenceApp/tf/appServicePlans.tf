@@ -1,7 +1,7 @@
 resource "azurerm_app_service_plan" "api" {
-  name                = "referenceApp-apisp-${var.environment}"
+  name                = "${var.application_name}-apisp-${var.environment}"
   location            = var.region
-  resource_group_name = azurerm_resource_group.referenceApp.name
+  resource_group_name = azurerm_resource_group.app.name
   kind                = "Linux"
 	reserved = true
 
@@ -10,3 +10,4 @@ resource "azurerm_app_service_plan" "api" {
     size = var.api_size
   }
 }
+
