@@ -38,6 +38,7 @@ function App (props) {
 
   useEffect(() => {
     const fetchData = async () => {
+			process.config();
 			const result = await axios(process.env.REACT_APP_API_URL  + "/todo" )
       setTasks(result.data.todos)
     }
