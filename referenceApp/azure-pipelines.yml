@@ -170,7 +170,7 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
 
     - script: |
-        yarn build
+        REACT_APP_ENV=development yarn build
       displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
 
