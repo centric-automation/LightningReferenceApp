@@ -170,9 +170,11 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
 
     - script: |
-        REACT_APP_ENV=development yarn build
+        yarn build
       displayName: 'Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
+      env:
+        REACT_APP_ENV: development
 
     - script: yarn test ---coverage --watchAll=false --reporters="jest-trx-results-processor"
       displayName: 'Yarn Test and Code Coverage'
