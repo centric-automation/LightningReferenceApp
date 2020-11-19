@@ -273,4 +273,4 @@ stages:
             WebAppName: 'aceraccoon-web-dev'
             packageForLinux: '$(System.DefaultWorkingDirectory)/development_build/'
             RuntimeStack: 'NODE|10.14'
-            StartupCommand: 'yarn start'
+            # StartupCommand: 'yarn start'
