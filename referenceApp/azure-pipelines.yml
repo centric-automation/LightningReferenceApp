@@ -271,6 +271,6 @@ stages:
             azureSubscription: 'MSD-RandD(477728c9-15e4-46f4-a786-e56c5122926d)'
             appType: 'webAppLinux'
             WebAppName: 'aceraccoon-web-dev'
-            packageForLinux: '$(System.DefaultWorkingDirectory)/development_build/**'
+            packageForLinux: '$(System.DefaultWorkingDirectory)/development_build/'
             RuntimeStack: 'NODE|10.14'
             StartupCommand: 'yarn start'
