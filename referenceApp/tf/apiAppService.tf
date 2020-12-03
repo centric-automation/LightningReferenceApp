@@ -6,7 +6,7 @@ resource "azurerm_app_service" "api" {
 
   site_config {
 		always_on = false
-		    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/${var.application_name}.api:latest"
+		linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/${var.application_name}.api:latest"
 	}
 	
 	app_settings = {
@@ -28,7 +28,31 @@ resource "azurerm_app_service" "api" {
 	}
 }
 
+resource "azurerm_app_service" "web" {
+	name                = "${random_pet.server.id}-web-${var.environment}"
+  location            = azurerm_resource_group.app.location
+  resource_group_name = azurerm_resource_group.app.name
+  app_service_plan_id = azurerm_app_service_plan.api.id
+
+	site_config {
+		always_on = false
+		app_command_line = "yarn start"	
+		default_documents = [
+			"index.html"
+		]
+	}
+
+	app_settings = {
+		"REACT_APP_API_URL" = "https://${azurerm_app_service.api.default_site_hostname}/api"
+	}
+}
+
 output "api_url" {
   description = "API URL"
   value       = azurerm_app_service.api.default_site_hostname
+}
+
+output "web_url" {
+  description = "WEB URL"
+  value       = azurerm_app_service.web.default_site_hostname
 }
