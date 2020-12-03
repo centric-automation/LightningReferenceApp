@@ -19,5 +19,10 @@ services:
       - "1433:1433"
     volumes:
       - "sql-server-data:/var/opt/mssql"
+  testsuite:
+    build: "e2e"
+    depends_on:
+      - "api"
+      - "sqlserver"
 volumes:
   sql-server-data:
