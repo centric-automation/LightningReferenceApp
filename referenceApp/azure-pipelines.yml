@@ -239,11 +239,11 @@ stages:
   jobs:
    
 
-    - job: DeployAPI
+    - deployment: DeployAPI
       displayName: "API: Deploy to DEV Environment"
       dependsOn: []
 
-    - job: DeployWEBAPP
+    - deployment: DeployWEBAPP
       displayName: "WEBAPP: Deploy to DEV Environment"
       dependsOn: []
       
