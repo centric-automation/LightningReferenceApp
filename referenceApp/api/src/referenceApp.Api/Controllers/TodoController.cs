@@ -52,7 +52,6 @@ namespace referenceApp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [HttpPut("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [FeatureGate(FeatureFlags.DeleteTodo)]
