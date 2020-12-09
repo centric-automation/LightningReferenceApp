@@ -124,20 +124,20 @@ stages:
         artifact: 'api-drop'
         publishLocation: 'pipeline'
 
-    # - task: Docker@2
-    #   displayName: Login to ACR
-    #   inputs:
-    #     command: login
-    #     containerRegistry: $(containerRegistryServiceConnection)
+    - task: Docker@2
+      displayName: Login to ACR
+      inputs:
+        command: login
+        containerRegistry: $(containerRegistryServiceConnection)
         
-    # - task: Docker@2
-    #   displayName: Build Docker Image and Push to Registry
-    #   inputs:
-    #     containerRegistry: $(containerRegistryServiceConnection)
-    #     repository: 'referenceApp.Api'
-    #     command: 'buildAndPush'
-    #     Dockerfile: $(apiDockerFilePath)
-    #     tags:
+    - task: Docker@2
+      displayName: Build Docker Image and Push to Registry
+      inputs:
+        containerRegistry: $(containerRegistryServiceConnection)
+        repository: 'referenceApp.Api'
+        command: 'buildAndPush'
+        Dockerfile: $(apiDockerFilePath)
+        tags:
 
 - stage: BuildTestStageWebApp
   displayName: 'WEBAPP: Build, Test and Stage'
@@ -237,55 +237,36 @@ stages:
   condition: and(succeeded(), eq(variables.isMaster, true))
   
   jobs:
-    - deployment: DeployDevAPI
+    - job: DeployAPI
       displayName: "API: Deploy to DEV Environment"
-      environment: Development
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: Docker@2
-              displayName: Login to ACR
-              inputs:
-                command: login
-                containerRegistry: $(containerRegistryServiceConnection)
-                
-            - task: Docker@2
-              displayName: Build Docker Image and Push to Registry
-              inputs:
-                containerRegistry: $(containerRegistryServiceConnection)
-                repository: 'referenceApp.Api'
-                command: 'buildAndPush'
-                Dockerfile: $(apiDockerFilePath)
-                tags:
-   
+      dependsOn: []
 
-    # - job: DeployAPI
-    #   displayName: "API: Deploy to DEV Environment"
-    #   dependsOn: []
-
-    - job: DeployWEBAPP
+    - deployment: DeployWEBAPP
       displayName: "WEBAPP: Deploy to DEV Environment"
+      environment: Development
       dependsOn: []
       
       pool:
         vmImage: 'windows-latest'
 
-      steps:
-        - task: DownloadPipelineArtifact@2
-          displayName: "WEBAPP Download Build Pipeline Artifacts"
-          inputs:
-            buildType: 'current'
-            artifactName: 'web-app-drop'
-            targetPath: '$(System.DefaultWorkingDirectory)'
-        - task: AzureFileCopy@4
-          inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
-            azureSubscription: '$(subscription)'
-            Destination: 'AzureBlob'
-            storage: '$(azureDevStorageAccount)'
-            CleanTargetBeforeCopy: true
-            ContainerName: '$web'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: DownloadPipelineArtifact@2
+                displayName: "WEBAPP Download Build Pipeline Artifacts"
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'web-app-drop'
+                  targetPath: '$(System.DefaultWorkingDirectory)'
+              - task: AzureFileCopy@4
+                inputs:
+                  SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
+                  azureSubscription: '$(subscription)'
+                  Destination: 'AzureBlob'
+                  storage: '$(azureDevStorageAccount)'
+                  CleanTargetBeforeCopy: true
+                  ContainerName: '$web'
 
 # - stage: DeployToTest
 #   displayName: 'Deploy API and WEBAPP to TEST Environment'
