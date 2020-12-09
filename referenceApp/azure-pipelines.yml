@@ -124,20 +124,20 @@ stages:
         artifact: 'api-drop'
         publishLocation: 'pipeline'
 
-    - task: Docker@2
-      displayName: Login to ACR
-      inputs:
-        command: login
-        containerRegistry: $(containerRegistryServiceConnection)
+    # - task: Docker@2
+    #   displayName: Login to ACR
+    #   inputs:
+    #     command: login
+    #     containerRegistry: $(containerRegistryServiceConnection)
         
-    - task: Docker@2
-      displayName: Build Docker Image and Push to Registry
-      inputs:
-        containerRegistry: $(containerRegistryServiceConnection)
-        repository: 'referenceApp.Api'
-        command: 'buildAndPush'
-        Dockerfile: $(apiDockerFilePath)
-        tags:
+    # - task: Docker@2
+    #   displayName: Build Docker Image and Push to Registry
+    #   inputs:
+    #     containerRegistry: $(containerRegistryServiceConnection)
+    #     repository: 'referenceApp.Api'
+    #     command: 'buildAndPush'
+    #     Dockerfile: $(apiDockerFilePath)
+    #     tags:
 
 - stage: BuildTestStageWebApp
   displayName: 'WEBAPP: Build, Test and Stage'
@@ -237,11 +237,32 @@ stages:
   condition: and(succeeded(), eq(variables.isMaster, true))
   
   jobs:
+    - deployment: DeployDevAPI
+      displayName: "API: Deploy to DEV Environment"
+      environment: Development
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: Docker@2
+              displayName: Login to ACR
+              inputs:
+                command: login
+                containerRegistry: $(containerRegistryServiceConnection)
+                
+            - task: Docker@2
+              displayName: Build Docker Image and Push to Registry
+              inputs:
+                containerRegistry: $(containerRegistryServiceConnection)
+                repository: 'referenceApp.Api'
+                command: 'buildAndPush'
+                Dockerfile: $(apiDockerFilePath)
+                tags:
    
 
-    - job: DeployAPI
-      displayName: "API: Deploy to DEV Environment"
-      dependsOn: []
+    # - job: DeployAPI
+    #   displayName: "API: Deploy to DEV Environment"
+    #   dependsOn: []
 
     - job: DeployWEBAPP
       displayName: "WEBAPP: Deploy to DEV Environment"
