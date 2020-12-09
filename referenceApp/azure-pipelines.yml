@@ -237,22 +237,8 @@ stages:
   condition: and(succeeded(), eq(variables.isMaster, true))
   
   jobs:
-    - job: DeployAPI
-      displayName: "API: Deploy to DEV Environment"
-      dependsOn: []
-
-      steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: '$(subscription)'
-            appType: 'webAppContainer'
-            WebAppName: 'aceraccoon-api-dev'
-            DockerNamespace: 'appsharedcr.azurecr.io'
-            DockerRepository: 'referenceApp.api:latest'
-
-    - deployment: DeployWEBAPP
-      displayName: "WEBAPP: Deploy to DEV Environment"
+    - deployment: DeployWEBAPPandAPI
+      displayName: "Deploy to DEV Environment"
       environment: Development
       dependsOn: []
       
@@ -263,13 +249,24 @@ stages:
         runOnce:
           deploy:
             steps:
+              - task: AzureRmWebAppDeployment@4
+                displayName: "API: Deploy"
+                inputs:
+                  ConnectionType: 'AzureRM'
+                  azureSubscription: '$(subscription)'
+                  appType: 'webAppContainer'
+                  WebAppName: 'aceraccoon-api-dev'
+                  DockerNamespace: 'appsharedcr.azurecr.io'
+                  DockerRepository: 'referenceApp.api:latest'
+
               - task: DownloadPipelineArtifact@2
-                displayName: "WEBAPP Download Build Pipeline Artifacts"
+                displayName: "WEBAPP: Download Build Pipeline Artifacts"
                 inputs:
                   buildType: 'current'
                   artifactName: 'web-app-drop'
                   targetPath: '$(System.DefaultWorkingDirectory)'
               - task: AzureFileCopy@4
+                displayName: "WEBAPP: Deploy"
                 inputs:
                   SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
                   azureSubscription: '$(subscription)'
