@@ -287,5 +287,5 @@ stages:
             CleanTargetBeforeCopy: true
             ContainerName: '$web'
 
-- stage: DeployToTest
-  displayName: 'Deploy API and WEBAPP to TEST Environment'
+# - stage: DeployToTest
+#   displayName: 'Deploy API and WEBAPP to TEST Environment'
