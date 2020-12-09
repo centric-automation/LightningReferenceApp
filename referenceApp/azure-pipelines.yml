@@ -241,6 +241,16 @@ stages:
       displayName: "API: Deploy to DEV Environment"
       dependsOn: []
 
+      steps:
+        - task: AzureRmWebAppDeployment@4
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: '$(subscription)'
+            appType: 'webAppContainer'
+            WebAppName: 'aceraccoon-api-dev'
+            DockerNamespace: 'appsharedcr.azurecr.io'
+            DockerRepository: 'referenceApp.api:latest'
+
     - deployment: DeployWEBAPP
       displayName: "WEBAPP: Deploy to DEV Environment"
       environment: Development
