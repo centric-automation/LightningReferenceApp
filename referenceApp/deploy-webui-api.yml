@@ -1,0 +1,47 @@
+parameters:
+- name: environment
+- name: subscription
+- name: apiAppName
+- name: dockerNamespace
+- name: dockerRepository
+- name: webAppArtifactName
+- name: webAppStorageAccount
+
+jobs:
+- deployment: DeployWEBAPPandAPI
+  displayName: "Deploy to ${{ parameters.environment }} Environment"
+  environment: ${{ parameters.environment }}
+  dependsOn: []
+  
+  pool:
+    vmImage: 'windows-latest'
+
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: "API: Deploy"
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: ${{ parameters.subscription }}
+              appType: 'webAppContainer'
+              WebAppName: ${{ parameters.apiAppName }}
+              DockerNamespace: ${{ parameters.dockerNamespace }}
+              DockerRepository: ${{ parameters.dockerRepository }}
+
+          - task: DownloadPipelineArtifact@2
+            displayName: "WEBAPP: Download Build Pipeline Artifacts"
+            inputs:
+              buildType: 'current'
+              artifactName: ${{ parameters.webAppArtifactName }}
+              targetPath: '$(System.DefaultWorkingDirectory)'
+          - task: AzureFileCopy@4
+            displayName: "WEBAPP: Deploy"
+            inputs:
+              SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
+              azureSubscription: ${{ parameters.subscription }}
+              Destination: 'AzureBlob'
+              storage: ${{ parameters.webAppStorageAccount }}
+              CleanTargetBeforeCopy: true
+              ContainerName: '$web'
