@@ -240,7 +240,7 @@ stages:
       parameters:
         environment: ${{ variables.environment }}
         subscription: '$(subscription)'
-        apiAppName: 'aceracoon-api-dev'
+        apiAppName: 'aceraccoon-api-dev'
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
@@ -255,7 +255,7 @@ stages:
       parameters:
         environment: ${{ variables.environment }}
         subscription: '$(subscription)'
-        apiAppName: 'aceracoon-api-dev'
+        apiAppName: 'aceraccoon-api-dev'
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
@@ -270,7 +270,7 @@ stages:
       parameters:
         environment: ${{ variables.environment }}
         subscription: '$(subscription)'
-        apiAppName: 'aceracoon-api-dev'
+        apiAppName: 'aceraccoon-api-dev'
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
