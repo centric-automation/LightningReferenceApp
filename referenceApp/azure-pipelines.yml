@@ -247,7 +247,7 @@ stages:
         webAppStorageAccount: '$(azureDevStorageAccount)'
 
 - stage: TEST
-  dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
+  dependsOn: [DEV]
   variables:
     Environment: Test
   jobs:
@@ -262,7 +262,7 @@ stages:
         webAppStorageAccount: '$(azureDevStorageAccount)'
 
 - stage: PRODUCTION
-  dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
+  dependsOn: [TEST]
   variables:
     Environment: Test
   jobs:
