@@ -5,6 +5,7 @@ parameters:
 - name: dockerNamespace
 - name: dockerRepository
 - name: webAppArtifactName
+- name: webAppSourceLocation
 - name: webAppStorageAccount
 
 jobs:
@@ -36,10 +37,11 @@ jobs:
               buildType: 'current'
               artifactName: ${{ parameters.webAppArtifactName }}
               targetPath: '$(System.DefaultWorkingDirectory)'
+
           - task: AzureFileCopy@4
             displayName: "WEBAPP: Deploy"
             inputs:
-              SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
+              SourcePath: ${{ parameters.webAppSourceLocation }}
               azureSubscription: ${{ parameters.subscription }}
               Destination: 'AzureBlob'
               storage: ${{ parameters.webAppStorageAccount }}

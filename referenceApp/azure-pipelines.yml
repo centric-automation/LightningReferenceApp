@@ -215,7 +215,7 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
       env:
         CI: true
-        REACT_APP_ENV: test
+        REACT_APP_ENV: production
 
     - task: CopyFiles@2
       displayName: Stage PRODUCTION Build
@@ -244,6 +244,7 @@ stages:
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
+        webAppSourceLocation: '$(System.DefaultWorkingDirectory)/development_build/**'
         webAppStorageAccount: 'aceraccoonwebdev'
 
 - stage: TEST
@@ -259,6 +260,7 @@ stages:
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
+        webAppSourceLocation: '$(System.DefaultWorkingDirectory)/test_build/**'
         webAppStorageAccount: 'sensiblewoodcockwebtest'
 
 - stage: PRODUCTION
@@ -274,6 +276,7 @@ stages:
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
+        webAppSourceLocation: '$(System.DefaultWorkingDirectory)/production_build/**'
         webAppStorageAccount: 'rareblowfishwebprod'
   
 
