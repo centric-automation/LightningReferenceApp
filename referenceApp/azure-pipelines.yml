@@ -264,7 +264,7 @@ stages:
 - stage: PRODUCTION
   dependsOn: [TEST]
   variables:
-    Environment: Test
+    Environment: Production
   jobs:
     - template:  deploy-webui-api.yml
       parameters:
