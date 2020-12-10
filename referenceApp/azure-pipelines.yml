@@ -170,7 +170,7 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
 
     - script: |
-        yarn build
+        yarn build:development
       displayName: 'DEVELOPMEMNT Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
@@ -195,7 +195,7 @@ stages:
         targetFolder: '$(Build.ArtifactStagingDirectory)/development_build'
 
     - script: |
-        yarn build
+        yarn build:test
       displayName: 'TEST Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
@@ -210,7 +210,7 @@ stages:
         targetFolder: '$(Build.ArtifactStagingDirectory)/test_build'
 
     - script: |
-        yarn build
+        yarn build:production
       displayName: 'PRODUCTION Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
