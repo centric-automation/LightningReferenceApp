@@ -244,7 +244,7 @@ stages:
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
-        webAppStorageAccount: '$(azureDevStorageAccount)'
+        webAppStorageAccount: 'aceraccoonwebdev'
 
 - stage: TEST
   dependsOn: [DEV]
@@ -255,11 +255,11 @@ stages:
       parameters:
         environment: ${{ variables.environment }}
         subscription: '$(subscription)'
-        apiAppName: 'aceraccoon-api-dev'
+        apiAppName: 'sensiblewoodcock-api-test'
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
-        webAppStorageAccount: '$(azureDevStorageAccount)'
+        webAppStorageAccount: 'sensiblewoodcockwebtest'
 
 - stage: PRODUCTION
   dependsOn: [TEST]
@@ -270,11 +270,11 @@ stages:
       parameters:
         environment: ${{ variables.environment }}
         subscription: '$(subscription)'
-        apiAppName: 'aceraccoon-api-dev'
+        apiAppName: 'rareblowfish-api-prod'
         dockerNamespace: 'appsharedcr.azurecr.io'
         dockerRepository: 'referenceApp.api:latest'
         webAppArtifactName: 'web-app-drop'
-        webAppStorageAccount: '$(azureDevStorageAccount)'
+        webAppStorageAccount: 'rareblowfishwebprod'
   
 
 # - stage: DeployToDev

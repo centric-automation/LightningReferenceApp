@@ -6,15 +6,15 @@ resource "azurerm_app_service" "api" {
 
   site_config {
 		always_on = false
-		linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/${var.application_name}.api:latest"
+		# linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/${var.application_name}.api:latest"
 	}
 	
 	app_settings = {
     "MSDEPLOY_RENAME_LOCKED_FILES" = "1"
 		"WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-		"DOCKER_REGISTRY_SERVER_URL"          = "https://${azurerm_container_registry.acr.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
+		# "DOCKER_REGISTRY_SERVER_URL"          = "https://${azurerm_container_registry.acr.login_server}"
+    # "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
+    # "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
   }
 
   connection_string {
