@@ -16,6 +16,7 @@ resource "azurerm_app_service" "api" {
     "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
 		"DOCKER_CUSTOM_IMAGE_NAME" = "${azurerm_container_registry.acr.login_server}/refrenceApp.api:latest"
+		"APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.insights.instrumentation_key}"
   }
 
   connection_string {
