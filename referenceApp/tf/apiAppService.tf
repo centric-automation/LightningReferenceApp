@@ -6,16 +6,16 @@ resource "azurerm_app_service" "api" {
 
   site_config {
 		always_on = false
-		linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/${var.application_name}.api:latest"
+		linux_fx_version = "DOCKER|${var.shared_container_registry_login_server}/${var.application_name}.api:latest"
 	}
 	
 	app_settings = {
     "MSDEPLOY_RENAME_LOCKED_FILES" = "1"
 		"WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-		"DOCKER_REGISTRY_SERVER_URL"          = "https://${azurerm_container_registry.acr.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
-		"DOCKER_CUSTOM_IMAGE_NAME" = "${azurerm_container_registry.acr.login_server}/refrenceApp.api:latest"
+		"DOCKER_REGISTRY_SERVER_URL"          = "https://${var.shared_container_registry_login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME"     = var.shared_container_registry_admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = var.shared_container_registry_admin_password
+		"DOCKER_CUSTOM_IMAGE_NAME" = "${var.shared_container_registry_login_server}/refrenceApp.api:latest"
 		"APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.insights.instrumentation_key
   }
 

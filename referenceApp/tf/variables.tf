@@ -15,6 +15,9 @@ variable "state_key" {
 # Development Shared
 variable "shared_resource_group_name" {}
 variable "shared_container_registry_name" {}
+variable "shared_container_registry_login_server" {}
+variable "shared_container_registry_admin_username" {}
+variable "shared_container_registry_admin_password" {}
 
 # Application
 variable "application_name" { }

@@ -1,0 +1,5 @@
+application_name = "referenceapp"
+environment = "test"
+region = "East US 2"
+api_size = "B1"
+api_tier = "Basic"

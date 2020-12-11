@@ -1,2 +1,5 @@
 shared_resource_group_name = "appSharedRG"
 shared_container_registry_name = "appSharedCR"
+shared_container_registry_login_server = "appsharedcr.azurecr.io"
+shared_container_registry_admin_username = "appSharedCR"
+shared_container_registry_admin_password = "czSFT=uQlGcmyCj/xFh+Bk475Btg7j7S"
