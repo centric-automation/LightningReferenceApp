@@ -2,7 +2,7 @@
 
 # This script will refresh the current source in the current repo
 # with that from the original source core framework repo.
-# This is a destructive operation
+# This is a **destructive** operation
 
 #1. Destroy previous framework if it exists
 rm -rf e2e

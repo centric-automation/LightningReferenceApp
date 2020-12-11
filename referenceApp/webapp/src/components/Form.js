@@ -17,7 +17,7 @@ function Form (props) {
     <form onSubmit={handleSubmit}>
       <h2 className="label-wrapper">
         <label htmlFor="new-todo-input">
-          Todo
+          Manage Your To-do
         </label>
       </h2>
       <input

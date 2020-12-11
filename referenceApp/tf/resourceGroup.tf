@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "app" {
-	name = "${var.application_name}_${var.environment}"
-	location = var.region
+  name     = "${var.application_name}_${var.environment}"
+  location = var.region
 }
 
 resource "azurerm_resource_group" "sharedrg" {

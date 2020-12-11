@@ -170,7 +170,7 @@ stages:
       workingDirectory: $(webAppSolutionRoot)
 
     - script: |
-        yarn build
+        yarn build:development
       displayName: 'DEVELOPMEMNT Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
@@ -195,7 +195,7 @@ stages:
         targetFolder: '$(Build.ArtifactStagingDirectory)/development_build'
 
     - script: |
-        yarn build
+        yarn build:test
       displayName: 'TEST Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
@@ -210,12 +210,12 @@ stages:
         targetFolder: '$(Build.ArtifactStagingDirectory)/test_build'
 
     - script: |
-        yarn build
+        yarn build:production
       displayName: 'PRODUCTION Yarn Build'
       workingDirectory: $(webAppSolutionRoot)
       env:
         CI: true
-        REACT_APP_ENV: test
+        REACT_APP_ENV: production
 
     - task: CopyFiles@2
       displayName: Stage PRODUCTION Build
@@ -231,46 +231,98 @@ stages:
         artifact: 'web-app-drop'
         publishLocation: 'pipeline'
 
-- stage: DeployToDev
-  displayName: 'Deploy API and WEBAPP to DEV Environment'
+- stage: DEV
   dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
-  condition: and(succeeded(), eq(variables.isMaster, true))
-  
+  variables:
+    Environment: Development
   jobs:
-   
+    - template:  deploy-webui-api.yml
+      parameters:
+        environment: ${{ variables.environment }}
+        subscription: '$(subscription)'
+        apiAppName: 'aceraccoon-api-dev'
+        dockerNamespace: 'appsharedcr.azurecr.io'
+        dockerRepository: 'referenceApp.api:latest'
+        webAppArtifactName: 'web-app-drop'
+        webAppSourceLocation: '$(System.DefaultWorkingDirectory)/development_build/**'
+        webAppStorageAccount: 'aceraccoonwebdev'
 
-    - job: DeployAPI
-      displayName: "API: Deploy to DEV Environment"
-      dependsOn: []
+- stage: TEST
+  dependsOn: [DEV]
+  variables:
+    Environment: Test
+  jobs:
+    - template:  deploy-webui-api.yml
+      parameters:
+        environment: ${{ variables.environment }}
+        subscription: '$(subscription)'
+        apiAppName: 'sensiblewoodcock-api-test'
+        dockerNamespace: 'appsharedcr.azurecr.io'
+        dockerRepository: 'referenceApp.api:latest'
+        webAppArtifactName: 'web-app-drop'
+        webAppSourceLocation: '$(System.DefaultWorkingDirectory)/test_build/**'
+        webAppStorageAccount: 'sensiblewoodcockwebtest'
 
-    - job: DeployWEBAPP
-      displayName: "WEBAPP: Deploy to DEV Environment"
-      dependsOn: []
+- stage: PRODUCTION
+  dependsOn: [TEST]
+  variables:
+    Environment: Production
+  jobs:
+    - template:  deploy-webui-api.yml
+      parameters:
+        environment: ${{ variables.environment }}
+        subscription: '$(subscription)'
+        apiAppName: 'rareblowfish-api-prod'
+        dockerNamespace: 'appsharedcr.azurecr.io'
+        dockerRepository: 'referenceApp.api:latest'
+        webAppArtifactName: 'web-app-drop'
+        webAppSourceLocation: '$(System.DefaultWorkingDirectory)/production_build/**'
+        webAppStorageAccount: 'rareblowfishwebprod'
+  
+
+# - stage: DeployToDev
+#   displayName: 'Deploy API and WEBAPP to DEV Environment'
+#   dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
+#   condition: and(succeeded(), eq(variables.isMaster, true))
+  
+#   jobs:
+#     - deployment: DeployWEBAPPandAPI
+#       displayName: "Deploy to DEV Environment"
+#       environment: Development
+#       dependsOn: []
       
-      pool:
-        vmImage: 'windows-latest'
+#       pool:
+#         vmImage: 'windows-latest'
 
-      steps:
-        - task: DownloadPipelineArtifact@2
-          displayName: "WEBAPP Download Build Pipeline Artifacts"
-          inputs:
-            buildType: 'current'
-            artifactName: 'web-app-drop'
-            targetPath: '$(System.DefaultWorkingDirectory)'
-        - task: AzureFileCopy@4
-          inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
-            azureSubscription: '$(subscription)'
-            Destination: 'AzureBlob'
-            storage: '$(azureDevStorageAccount)'
-            CleanTargetBeforeCopy: true
-            ContainerName: '$web'
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'MSD-RandD(477728c9-15e4-46f4-a786-e56c5122926d)'
-            appType: 'webAppLinux'
-            WebAppName: 'aceraccoon-web-dev'
-            packageForLinux: '$(System.DefaultWorkingDirectory)/development_build/'
-            RuntimeStack: 'NODE|10.14'
-            # StartupCommand: 'yarn start'
+#       strategy:
+#         runOnce:
+#           deploy:
+#             steps:
+#               - task: AzureRmWebAppDeployment@4
+#                 displayName: "API: Deploy"
+#                 inputs:
+#                   ConnectionType: 'AzureRM'
+#                   azureSubscription: '$(subscription)'
+#                   appType: 'webAppContainer'
+#                   WebAppName: 'aceraccoon-api-dev'
+#                   DockerNamespace: 'appsharedcr.azurecr.io'
+#                   DockerRepository: 'referenceApp.api:latest'
+
+#               - task: DownloadPipelineArtifact@2
+#                 displayName: "WEBAPP: Download Build Pipeline Artifacts"
+#                 inputs:
+#                   buildType: 'current'
+#                   artifactName: 'web-app-drop'
+#                   targetPath: '$(System.DefaultWorkingDirectory)'
+#               - task: AzureFileCopy@4
+#                 displayName: "WEBAPP: Deploy"
+#                 inputs:
+#                   SourcePath: '$(System.DefaultWorkingDirectory)/development_build/**'
+#                   azureSubscription: '$(subscription)'
+#                   Destination: 'AzureBlob'
+#                   storage: '$(azureDevStorageAccount)'
+#                   CleanTargetBeforeCopy: true
+#                   ContainerName: '$web'
+
+# - stage: DeployToTest
+#   displayName: 'Deploy API and WEBAPP to TEST Environment'
