@@ -9,7 +9,7 @@ terraform {
 		resource_group_name   = "apptfstate"
     storage_account_name  = "apptfstate31538"
     container_name          = "apptfstate"
-    key                        = "mJYySEkR4Q9BvyoLKdZioVlyR9Jic74HZPKJgpkMazH3uhzM/T2YNoW00m79TvWmxgiS4DuqeDIf9d/RsaS/fw=="
+    
 	}
 }
 
