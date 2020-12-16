@@ -8,7 +8,6 @@ variables:
   subscription: "MSD-RandD(477728c9-15e4-46f4-a786-e56c5122926d)"
   containerImageRepository: "api"
   containerRegistryServiceConnection: "projectContainerRegistry"
-  azureDevStorageAccount: 'aceraccoonwebdev'
 
   # ***** API Project Build Params *****
   apiBuildVMImage: 'ubuntu-latest'
@@ -59,10 +58,6 @@ stages:
         custom: 'tool'
         arguments: 'update -g dotnet-format'
     
-    # Run dotnet format --dry-run --check
-    # By default, the task ensure the exit code is 0
-    # If a file needs to be edited by dotnet format, the exit code will be a non-zero value
-    # So the task will fail
     - task: CmdLine@2
       displayName: 'Lint dotnet'
       inputs:
@@ -232,6 +227,7 @@ stages:
         publishLocation: 'pipeline'
 
 - stage: DEV
+  displayName: "DEV Deployment"
   dependsOn: [BuildTestStageApi, BuildTestStageWebApp]
   variables:
     Environment: Development
@@ -248,6 +244,7 @@ stages:
         webAppStorageAccount: 'aceraccoonwebdev'
 
 - stage: TEST
+  displayName: "TEST Deployment"
   dependsOn: [DEV]
   variables:
     Environment: Test
@@ -264,6 +261,7 @@ stages:
         webAppStorageAccount: 'sensiblewoodcockwebtest'
 
 - stage: PRODUCTION
+  displayName: "PRODUCTION Deployment"
   dependsOn: [TEST]
   variables:
     Environment: Production
