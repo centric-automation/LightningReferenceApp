@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using MediatR;
 using MediatR.Pipeline;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
@@ -70,7 +71,8 @@ namespace referenceApp.Api
                     optionsBiuilder => optionsBiuilder.MigrationsAssembly("referenceApp.Api"))
             );
 
-            services.AddSingleton<ITelemetryInitializer, ApplicationNameTelemetryInitializer>();
+            services.AddSingleton<ITelemetryInitializer>(new ApplicationNameTelemetryInitializer("referenceApp.Api"));
+            services.Configure<ApplicationInsightsServiceOptions>(Configuration.GetSection("ApplicationInsights"));
             services.AddApplicationInsightsTelemetry();
             services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = true; });
         }

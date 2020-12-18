@@ -10,23 +10,17 @@ namespace referenceApp.Api.Telemetry
 {
     public class ApplicationNameTelemetryInitializer : ITelemetryInitializer
     {
-        private readonly string versionString;
+        private readonly string roleName;
 
-        public ApplicationNameTelemetryInitializer()
+        public ApplicationNameTelemetryInitializer(string roleName)
         {
-            versionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        }
-
-        public ApplicationNameTelemetryInitializer(Version version)
-        {
-            versionString = version.ToString();
+            this.roleName = roleName;
         }
 
         public void Initialize(ITelemetry telemetry)
         {
 
-            telemetry.Context.Cloud.RoleName = "referenceApp.Api";
-            telemetry.Context.Component.Version = versionString;
+            telemetry.Context.Cloud.RoleName = roleName;
         }
     }
 }
