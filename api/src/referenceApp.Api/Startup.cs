@@ -5,6 +5,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using MediatR;
 using MediatR.Pipeline;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
+using referenceApp.Api.Telemetry;
 using referenceApp.Lib.Infrastructure;
 using referenceApp.Lib.Todos.Queries;
 using referenceApp.Persistence;
@@ -66,6 +70,11 @@ namespace referenceApp.Api
                     Configuration.GetConnectionString("ReferenceAppConnectionString"),
                     optionsBiuilder => optionsBiuilder.MigrationsAssembly("referenceApp.Api"))
             );
+
+            services.AddSingleton<ITelemetryInitializer>(new ApplicationNameTelemetryInitializer("referenceApp.Api"));
+            services.Configure<ApplicationInsightsServiceOptions>(Configuration.GetSection("ApplicationInsights"));
+            services.AddApplicationInsightsTelemetry();
+            services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = true; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
