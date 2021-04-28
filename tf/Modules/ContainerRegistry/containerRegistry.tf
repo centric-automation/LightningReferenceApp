@@ -1,3 +1,5 @@
+# Not touching this module as it looks like it was commented out. Not entirely sure on the reasoning yet. 
+
 # resource "azurerm_container_registry" "acr" {
 #   name                     = var.shared_container_registry_name
 #   resource_group_name      = azurerm_resource_group.sharedrg.name
