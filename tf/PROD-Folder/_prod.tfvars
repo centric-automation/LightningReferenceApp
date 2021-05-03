@@ -1,5 +1,5 @@
 application_name = "referenceapp"
 environment = "prod"
-region = "East US 2"
+region = "eastus2"
 api_size = "B1"
 api_tier = "Basic"

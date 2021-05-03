@@ -23,5 +23,3 @@ variable "shared_container_registry_admin_password" {}
 variable "application_name" { }
 variable "environment" { }
 variable "region" { }  
-variable "api_size" { }
-variable "api_tier" { }

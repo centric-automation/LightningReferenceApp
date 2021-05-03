@@ -42,35 +42,35 @@ data "azurerm_client_config" "current" {
 
 # ~RESOURCE GROUP EXAMPLE~ #
 module "resource_group" {
-  source   = "./Modules/ResourceGroup"
+  source   = "./_Modules/ResourceGroup"
   rg_name  = "${var.application_name}_${var.environment}"
   region   = var.region #In every other module, you can specify this region variable or utilize the output variable produced from the Resource Group Module
 }
 
 # ~APP SERVICE PLAN EXAMPLE~ #
 module "asp" {
-  source   = "./Modules/AppServicePlans" 
+  source   = "./_Modules/AppServicePlans" 
   resource_group_name   = module.resource_group.rg_name #References RG above to allow for resources creation of resources in this module
   app_service_plan_name = "${var.application_name}-apisp-${var.environment}"
   region                = var.region
   api_tier              = "Standard"
-  api_size              = "S1"
+  api_size              = "S1" 
 
   depends_on  = [module.resource_group]
 }
 
 # ~APP INSIGHTS EXAMPLE~ #
 module "appInsights" {
-  source   = "./Modules/AppInsights" 
+  source   = "./_Modules/AppInsights" 
   resource_group_name = module.resource_group.rg_name #References RG above to allow for resources creation of resources in this module
   app_insights_name   = "${random_pet.server.id}-appinsights-${var.environment}"
 
-  depends_on  = [module.resource_group]
+  depends_on  = [module.resource_group] 
 }
 
 # ~KEY VAULT EXAMPLE~ #
 module "keyVault" {
-  source   = "./Modules/KeyVault" 
+  source   = "./_Modules/KeyVault" 
   resource_group_name        = module.resource_group.rg_name #References RG above to allow for resources creation of resources in this module
   key_vault_name             = "kv_name"
   environment                = var.environment
@@ -85,7 +85,7 @@ module "keyVault" {
 
 # ~SQL DATABASE EXAMPLE~ #
 module "db" {
-  source   = "./Modules/Database" 
+  source   = "./_Modules/Database" 
   resource_group_name        = module.resource_group.rg_name #References RG above to allow for resources creation of resources in this module
   sql_server_name            = "${var.application_name}-dbserver-${var.environment}"
   sql_firewall_name          = "FirewallRule-${var.environment}"
@@ -100,7 +100,7 @@ module "db" {
 
 # ~APP SERVICE EXAMPLE~ #
 module "appservice" {
-  source   = "./Modules/AppService"
+  source   = "./_Modules/AppService"
   resource_group_name                      = module.resource_group.rg_name
   app_service_plan_id                      = module.asp.app_service_plan_id #References ID defined in another module
   app_insights_key                         = module.appInsights.instrumentation_key
@@ -112,12 +112,12 @@ module "appservice" {
   shared_container_registry_admin_username = var.shared_container_registry_admin_username
   shared_container_registry_admin_password = var.shared_container_registry_admin_password
 
-  depends_on  = [module.resource_group, module.db, module.asp, module.appInsights] #This module requires information from other modules to properly run. Force organized deployments with Depends_on function
+  depends_on  = [module.resource_group, module.db, module.asp, module.appInsights] #This module requires information from other Modules to properly run. Force organized deployments with Depends_on function
 }
 
 # ~WEB STORAGE ACCOUNT EXAMPLE~ #
 module "web_storage_account" {
-  source   = "./Modules/WebStorageAccount"
+  source   = "./_Modules/WebStorageAccount"
   resource_group_name  = module.resource_group.rg_name
   web_storage_account_name = "${random_pet.server.id}web${var.environment}"
 
