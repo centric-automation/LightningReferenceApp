@@ -1,8 +1,3 @@
-# Intro
-* main.tf — call modules, locals and data-sources to create all the resources
-* variables.tf — contains information of variables used in main.tf
-* outputs.tf — contains outputs from the resources generated in main.tf
-
 # Use Terraform to Provision all Microsoft Resources needed to launch the "Fast Forge" application
 Using the Terraform scripts and Modules provided in the "tf" folder, the user should be able to create all needed Microsoft Azure resources required for the "Fast Forge" application. 
 
