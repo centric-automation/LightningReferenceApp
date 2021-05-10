@@ -1,6 +1,5 @@
 <h1 align="center"> Use Terraform to Provision all Microsoft Resources needed to launch the "Fast Forge" application </h1>
 <h3 align="center"> Azure DevOps, GitHub Actions, Terraform IaC </h3>
-<h5 align="center"> Deploy the Fast Forge Application using automation and IaC </h5>
 
 <!-- TABLE OF CONTENTS -->
 <h2 id="table-of-contents"> :book: Table of Contents</h2>
