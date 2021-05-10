@@ -36,7 +36,7 @@
   <li><b>main.tf</b> - The main file is used to declare what Infrastructure resources to create, configure, and manage.</li>
   <li><b>variables.tf</b> - Contains variable definitions for your <code>main.tf</code> file.</li>
   <li><b>output.tf</b> - If applicable, resource output values will be specified in this file.</li>
-  <li><b>terraform.tfvars</b> - The <code>*.tfvars</code> file contains input variables that are set int he variables.tf file.</li>
+  <li><b>terraform.tfvars</b> - The <code>*.tfvars</code> file contains input variables that are set in the <code>variables.tf</code> file.</li>
 </ul>
 
 <h3>Some other supporting folders/files</h3>
@@ -56,7 +56,7 @@
 <ul>
   <li> Microsoft Azure Subscription</li>
   <li> Microsoft DevOps Organization</li>
-  <li> Establish the Resource Group, Storage Account, and Container needed to store a shared <code>*.tfstate</code> file</li>
+  <li> Resource Group, Storage Account, and Container needed to store a shared <code>*.tfstate</code> file</li>
 </ul>
 
 
