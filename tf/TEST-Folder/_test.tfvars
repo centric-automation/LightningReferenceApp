@@ -1,5 +1,5 @@
 application_name = "referenceapp"
 environment = "test"
-region = "eastus2"
+region = "!__region__!"
 api_size = "B1"
 api_tier = "Basic"

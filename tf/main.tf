@@ -8,7 +8,7 @@ terraform {
 	backend "azurerm" {
 		resource_group_name   = "apptfstate"
     storage_account_name  = "apptfstate31538"
-    container_name        = "apptfstate"
+    container_name        = "!__apptfstate__!"
     
 	}
 }
@@ -52,7 +52,7 @@ module "asp" {
   source   = "./_Modules/AppServicePlans" 
   resource_group_name   = module.resource_group.rg_name #References RG above to allow for resources creation of resources in this module
   app_service_plan_name = "${var.application_name}-apisp-${var.environment}"
-  region                = var.region
+  region                = module.resource_group.rg_location #var.region
   api_tier              = "Standard"
   api_size              = "S1" 
 
