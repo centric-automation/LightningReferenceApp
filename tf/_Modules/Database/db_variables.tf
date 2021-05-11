@@ -28,12 +28,6 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "region" {
-  description = "Region variable used by Terraform resources"
-  type        = string
-  default     = "eastus2"
-}
-
 variable "keyVault_secret_dbLogin" { 
   description = "DB Login"
   type        = string

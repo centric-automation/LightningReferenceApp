@@ -11,7 +11,7 @@ data "azurerm_resource_group" "app" { #Insinuating that this already exists or i
 # App Service Plan Creation #
 resource "azurerm_app_service_plan" "api" {
   name                = var.app_service_plan_name #${var.application_name}-apisp-${var.environment}
-  location            = var.region
+  location            = data.azurerm_resource_group.app.location
   resource_group_name = data.azurerm_resource_group.app.name
   kind                = "Linux"
 	reserved = true
@@ -20,6 +20,7 @@ resource "azurerm_app_service_plan" "api" {
     tier = var.api_tier
     size = var.api_size
   }
+  depends_on = [data.azurerm_resource_group.app]
 }
 
 output "app_service_plan_name" {

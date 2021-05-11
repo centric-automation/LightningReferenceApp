@@ -8,10 +8,12 @@ data "azurerm_resource_group" "app" { #Insinuating that this already exists or i
 resource "azurerm_sql_server" "dbserver" {
   name                         = var.sql_server_name
   resource_group_name          = data.azurerm_resource_group.app.name
-  location                     = var.region
+  location                     = data.azurerm_resource_group.app.location
   version                      = "12.0"
   administrator_login          = var.keyVault_secret_dbLogin    #azurerm_key_vault_secret.DbLogin.value
-  administrator_login_password = var.keyVault_secret_dbPassword #azurerm_key_vault_secret.DbPassword.value	
+  administrator_login_password = var.keyVault_secret_dbPassword #azurerm_key_vault_secret.DbPassword.value
+
+  depends_on = [data.azurerm_resource_group.app]
 }
 
 resource "azurerm_sql_firewall_rule" "allowServiceConnectionsRule" {
@@ -20,17 +22,20 @@ resource "azurerm_sql_firewall_rule" "allowServiceConnectionsRule" {
   server_name         = azurerm_sql_server.dbserver.name
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
+
+  depends_on = [azurerm_sql_server.dbserver]
 }
 
 resource "azurerm_sql_database" "db" {
   name                = var.sql_db_name #"${var.application_name}-db-${var.environment}"
   resource_group_name = data.azurerm_resource_group.app.name
-  location            = var.region
+  location            = data.azurerm_resource_group.app.location
   server_name         = azurerm_sql_server.dbserver.name
 
   tags = {
     environment = var.environment
   }
+  depends_on = [azurerm_sql_server.dbserver]
 }
 
 output "connection_string" {

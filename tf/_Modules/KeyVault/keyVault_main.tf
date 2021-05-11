@@ -8,7 +8,7 @@ data "azurerm_resource_group" "app" { #Insinuating that this already exists or i
 resource "azurerm_key_vault" "kv" {
   name                = var.key_vault_name #"${var.application_name}vault${var.environment}"
   resource_group_name = data.azurerm_resource_group.app.name
-  location            = var.region
+  location            = data.azurerm_resource_group.app.location
   sku_name            = "standard"
   tenant_id           = var.tenant_id #data.azurerm_client_config.current.tenant_id
 
@@ -31,6 +31,7 @@ resource "azurerm_key_vault" "kv" {
 	tags = {
     environment = var.environment 
   }
+  depends_on = [data.azurerm_resource_group.app]
 }
 
 resource "azurerm_key_vault_secret" "DbLogin" {
@@ -41,6 +42,7 @@ resource "azurerm_key_vault_secret" "DbLogin" {
   tags = {
     environment = var.environment
   }
+  depends_on = [azurerm_key_vault.kv]
 }
 
 output "key_vault_login_value" {
@@ -55,6 +57,7 @@ resource "azurerm_key_vault_secret" "DbPassword" {
   tags = {
     environment = var.environment
   }
+  depends_on = [azurerm_key_vault.kv]
 }
 
 output "key_vault_login_password_value" {

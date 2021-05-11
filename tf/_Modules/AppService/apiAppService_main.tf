@@ -40,6 +40,7 @@ resource "azurerm_app_service" "api" {
 	identity {
 		type="SystemAssigned"
 	}
+  depends_on = [data.azurerm_resource_group.app]
 }
 
 # Output value for app service #
@@ -67,6 +68,7 @@ resource "azurerm_monitor_metric_alert" "api_failed_requests" {
   action {
     action_group_id = var.performance_alert_id #azurerm_monitor_action_group.performance_alert.id
   }
+  depends_on = [data.azurerm_resource_group.app]
 }
 
 resource "azurerm_monitor_metric_alert" "api_response_time" {
@@ -87,6 +89,7 @@ resource "azurerm_monitor_metric_alert" "api_response_time" {
   action {
     action_group_id = var.performance_alert_id #azurerm_monitor_action_group.performance_alert.id
   }
+  depends_on = [data.azurerm_resource_group.app]
 }
 
 resource "azurerm_monitor_metric_alert" "api_pending_requests" {
@@ -107,4 +110,5 @@ resource "azurerm_monitor_metric_alert" "api_pending_requests" {
   action {
     action_group_id = var.performance_alert_id #azurerm_monitor_action_group.performance_alert.id
   }
+  depends_on = [data.azurerm_resource_group.app]
 }

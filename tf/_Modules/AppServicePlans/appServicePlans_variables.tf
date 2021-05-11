@@ -10,12 +10,6 @@ variable "app_service_plan_name" {
   default     = "temp-asp-name"
 }
 
-variable "region" {
-  description = "Region variable used by Terraform resources"
-  type        = string
-  default     = "eastus2"
-}
-
 variable "api_tier" {
   description = "API Tier"
   type        = string

@@ -10,12 +10,6 @@ variable "key_vault_name" {
   default     = "temp-kv"
 }
 
-variable "region" {
-  description = "Region variable used by Terraform resources"
-  type        = string
-  default     = "eastus2"
-}
-
 variable "tenant_id" {
   description = "Tenant ID"
   type        = string

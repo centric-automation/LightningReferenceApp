@@ -1,25 +1,27 @@
-#Administrative
-variable "state_resource_group_name" {
-	default="apptfstate"
+# Static Variables #
+variable "environment" {
+	description = "Environment variable used to define scope of resource. Examples include, DEV, TEST, QA, PROD, etc."
 }
-variable "state_storage_account_name" {
-	default="apptfstate31538"
+variable "application_name" {
+    description = "Name of application."
 }
-variable "state_container_name" {
-	default="apptfstate"
-}
-variable "state_key" {
-	default="mJYySEkR4Q9BvyoLKdZioVlyR9Jic74HZPKJgpkMazH3uhzM/T2YNoW00m79TvWmxgiS4DuqeDIf9d/RsaS/fw=="
-}
+variable "region" { 
+	description = "Azure region for resource"
+} 
+variable "api_tier" { 
+	description = "API tier used to define sku tier for App Service Plan"
+} 
+variable "api_size" { 
+	description = "API size used to define sku size for App Service Plan"
+} 
 
-# Development Shared
-variable "shared_resource_group_name" {}
-variable "shared_container_registry_name" {}
-variable "shared_container_registry_login_server" {}
-variable "shared_container_registry_admin_username" {}
-variable "shared_container_registry_admin_password" {}
-
-# Application
-variable "application_name" { }
-variable "environment" { }
-variable "region" { }  
+# Shared Container Information #
+variable "shared_container_registry_login_server" {
+	description = "Registry Login for the Shared Container Server"
+}
+variable "shared_container_registry_admin_username" {
+	description = "Admin Username for the Shared Container Server"	
+}
+variable "shared_container_registry_admin_password" {
+	description = "Admin Password for the Shared Container Server"
+}

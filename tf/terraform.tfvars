@@ -1,14 +1,10 @@
-# This terraform.tfvars file is generic in order to portray what could be needed to deploy the Azure resources. 
-# Using specific .tfvars files for each environment is the proprer way to reuse code while specifying differences in the resource builds
-# Shared information #
-shared_resource_group_name               = "appSharedRG"
-shared_container_registry_name           = "appSharedCR"
-shared_container_registry_login_server   = "appsharedcr.azurecr.io"
-shared_container_registry_admin_username = "appSharedCR"
-shared_container_registry_admin_password = "czSFT=uQlGcmyCj/xFh+Bk475Btg7j7S"
-
-
-# New addition to tfvars #
+# Static Variables #
 environment      = "dev" 
-region           = "eastus2"
 application_name = "app123"
+region           = "eastus2"
+api_tier         = "Standard"
+api_size         = "S1"
+
+shared_container_registry_login_server   = "!__SC_registry_login_server__!"   #"appsharedcr.azurecr.io"
+shared_container_registry_admin_username = "!__SC_registry_admin_username__!" #"appSharedCR"
+shared_container_registry_admin_password = "!__SC_registry_admin_password__!" #"czSFT=uQlGcmyCj/xFh+Bk475Btg7j7S"
