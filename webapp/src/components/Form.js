@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 function Form (props) {
   const [name, setName] = useState('')
 
-  function handleChnage (e) {
+  function handleChange (e) {
     setName(e.target.value)
   }
 
@@ -27,7 +27,7 @@ function Form (props) {
         name="text"
         autoComplete="off"
         value={name}
-        onChange={handleChnage}
+        onChange={handleChange}
       />
       <Button type="submit" variant="outline-primary" >
         Add
